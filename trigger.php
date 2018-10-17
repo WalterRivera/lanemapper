@@ -3,6 +3,9 @@ $id = $_GET['id'];
 $report= $_GET['option'];
 $distances = $_GET['distances'];
 $usbcoption = $_GET['usbcoption'];
+$beforefile = $_GET['beforefile'];
+$afterfile = $_GET['afterfile'];
+$lanestocompare = $_GET['lanestocompare'];
 
 $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
@@ -109,6 +112,16 @@ if($report == 'Export All USBC readings for all lanes to excel'){
   $args = $args.' 0 0 0 0 0 '.$distances.' '.$usbcoption.' 1 0 0 0 0 0';
   $name = strstr($filename, '.', true);
   $reportName = $name."_USBCReadings.xlsx";
+}
+
+if($report == 'Before and After Comparison'){
+  $beforefile = substr($beforefile, 1);
+  $afterfile = substr($afterfile, 1);
+  $beforepath = $path.$beforefile;
+  $afterpath = $path.$afterfile;
+
+  $args = $args.' 0 0 0 0 0 '.$distances.' '.$usbcoption.' 0 "'. $lanestocompare . '" "'.$beforepath.'" "'.$lanestocompare.'" "'.$afterpath.'" 1';
+  $reportName = $reportTitle."_CompareLaneMapReport.pdf";
 }
 
 

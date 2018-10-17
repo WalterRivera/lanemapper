@@ -4,7 +4,6 @@ session_start();
 if(!isset($_SESSION['userid'])){
   header('Location: login.php');
 }
-
 $id = $_SESSION['userid'];
 $email = $_SESSION['email'];
 $firstname = $_SESSION['fname'];
@@ -77,7 +76,34 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                  distances = document.getElementById('distances5').value;
                  usbcoption = 3;
               }
-              var queryString = "?distances=" + distances + "&option=" + option + "&id=" + id + "&usbcoption=" + usbcoption ;
+
+              if(option == "Before and After Comparison"){
+                var beforefile = "";
+                var afterfile = "";
+                var lanestocompare = "";
+                lanestocompare = document.getElementById('lanestocompare').value;
+
+
+                $('.custom-control-input:checkbox:checked').each(function(){
+                  if(this.id[0] == 'b'){
+                    beforefile = this.id;
+                  }
+                  if(this.id[0] == 'a'){
+                    afterfile = this.id;
+                  }
+                })
+                if(beforefile == '' || afterfile == ''){
+                  alert('Please Select Before File AND After File');
+                  return;
+                }
+
+                if (lanestocompare == ''){
+                  alert('Please Select Lanes to Compare');
+                  return;
+                }
+
+              }
+              var queryString = "?distances=" + distances + "&option=" + option + "&id=" + id + "&usbcoption=" + usbcoption + "&beforefile=" + beforefile + "&afterfile=" + afterfile + "&lanestocompare=" + lanestocompare;
               ajaxRequest.open("GET", "trigger.php" + queryString, true);
               ajaxRequest.send(null);
             }
@@ -134,10 +160,15 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
               <input id="distances3" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="15,30,50" value="">
             </div>
 
+            <div class="input-group mb-3" id="syntheticoptions" style="display:none">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-sm">Choose 5 Distances</span>
+              </div>
+              <input id="distances5" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="15,20,31,42,55" value="">
+            </div>
 
-
-            <div id="afterfile" style="margin-top:20px;">
-              <p style="font-weight:bold; color:#36454f;">Select 2 Files To Compare</P>
+            <div id="beforefile" style="margin-top:20px;">
+              <p style="font-weight:bold; color:#36454f;">Before File</P>
                 <?php
                 $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
                 mysqli_set_charset($db, "utf8");
@@ -156,8 +187,42 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                       $filename = $row['filename'];
                       ?>
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="<?php echo $filename; ?>">
-                        <label class="custom-control-label" for="<?php echo $filename; ?>"><?php echo $filename; ?></label>
+                        <input type="checkbox" class="custom-control-input" id="<?php echo 'b'. $filename; ?>">
+                        <label class="custom-control-label" for="<?php echo 'b'. $filename; ?>"><?php echo $filename; ?></label>
+                      </div>
+
+                      <?php
+
+                    }
+                  }
+                $db->close();
+                ?>
+            </div>
+
+
+
+            <div id="afterfile" style="margin-top:20px;">
+              <p style="font-weight:bold; color:#36454f;">After File</P>
+                <?php
+                $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+                mysqli_set_charset($db, "utf8");
+                  if (mysqli_connect_errno()){
+                    echo 'Error In Database Connection';
+                    exit;
+                  }
+                $db->select_db('uploads');
+                $query = "SELECT id,filename FROM uploads WHERE company='".$companyNoSpaces."' order by id desc";
+                $result = mysqli_query($db,$query) or die(mysqli_error());
+                $num_rows = mysqli_num_rows($result);
+                  if($num_rows > 0){
+                    while($row = mysqli_fetch_assoc($result)){
+
+                      $id = $row['id'];
+                      $filename = $row['filename'];
+                      ?>
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="<?php echo 'a'.$filename; ?>">
+                        <label class="custom-control-label" for="<?php echo 'a'.$filename; ?>"><?php echo $filename; ?></label>
                       </div>
 
                       <?php
@@ -169,12 +234,15 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
             </div>
 
             <div class="input-group mb-3" id="lanescomparison" style="display:none; margin-top:20px;">
+
+
               <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-sm">Choose Lanes To Compare</span>
               </div>
-              <input id="distances5" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="15,20,30,38,49" value="">
+              <input id="lanestocompare" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" placeholder="15,20,30,38,49" value="">
 
             </div>
+
 
 
           </form>
@@ -207,7 +275,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                   <?php echo $company ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" style="font-weight:bold;" href="#">My Account</a>
+                  <a class="dropdown-item" style="font-weight:bold;"href="#">My Account</a>
                   <a class="dropdown-item" style="font-weight:bold;"href="#">Contact Us</a>
                   <a class="dropdown-item" style="font-weight:bold;"href="logout.php">Log out</a>
                 </div>
@@ -407,6 +475,8 @@ $( "select" )
     $("#lanescomparison").hide();
     $("#beforefile").hide();
     $("#afterfile").hide();
+    $("#selectedfile1").hide();
+    $("#selectedfile2").hide();
 
     if(str == 'Reports for USBC (Wood)'){
       $("#woodoptions").show();
@@ -420,7 +490,8 @@ $( "select" )
       $("#beforefile").show();
       $("#afterfile").show();
       $("#lanescomparison").show();
-
+      $("#selectedfile1").show();
+      $("#selectedfile2").show();
     }
 
 

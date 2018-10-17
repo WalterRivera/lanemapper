@@ -12,6 +12,7 @@ $lastname = $_SESSION['lname'];
 $company = $_SESSION['company'];
 $companyNoSpaces = str_replace(' ', '_', $company);
 
+//somechange
 //verify Report status
 $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
 

@@ -1,0 +1,80 @@
+Version 2.0.1.5 updated 10/12/2018
+added parameters to make selection of lanes for Lane Map Comparison report
+-----------------------------------------------------------
+Version 2.0.1.4 updated 10/12/2018
+Set app to use command line parameters to run all reports without a user interface
+------------------------------------------------------------
+Version 2.0.1.3 updated 10/08/2018
+Tweaked Compare Lanes Before and After Lane Guide Report,
+Clear lanes selected if re-doing report
+Confirmed works with odd number lanes selected.
+Edit text in Convert Lane Mapper Files form
+Bumped Odd lane selection for Lane Guide Reports to 85
+-----------------------------------------------------------
+Version 2.0.1.2 updated 10/5/2018
+Adjustd lane guide report to be able to select odd nummber of lanes up to 63 lanes
+-----------------------------------------------------------
+Version 2.0.1.1 updated 09/25/2018
+Added routines to check if firewall is on and Turn On or Off Firewall
+this is needed to get file off of flash card with cable
+Set app to run as administrator
+Changed Menu "Report Settings" to "Report Cover Settings"
+Matched Colors in USBC grid and "Raw Calculation All Distances" Export
+Centered Slops charts on all reports
+Set selection color of lanes selected to report on to yellow to see selection easier
+----------------------------------------------------
+Version 2.0.1.0 updated 09/24/2018
+Added Compare Lanes Before and After Repairing Lanes to see difference after crew repairs lanes.
+Added Reminder to fill out Report settings when a report has a cover
+--------------------------------------------------------------
+Version 2.0.0.9 updated 09/18/2018
+Corrected Logo not found on first time install and run of cover report
+if report settings is not filled out and logo is not selected
+-------------------------------------------------
+Version 2.0.0.8 updated 09/18/2018
+Increased number Range in color legend
+--------------------------------------
+Version 2.0.0.7 updated 09/06/2018
+Save color numbers as they are adjusted
+Show buttons to return to default
+---------------------------------
+Version 2.0.0.6 updated 09/06/2018
+corrected Color Picker on Data Colors screen changing color when cancel is selected
+Edit slope chart arrow graphic for typo
+---------------------------------------------------------
+Version 2.0.0.5 updated 09/05/2018
+Added Permanent Kegel Logo to Cover reports.
+Added Button on Report settings to quickly put back Kegel Logo
+Heads Replaced will show Yes or No
+Corrected Colors on grid and report
+Formatted cells in USBC excel reports to number with no decimal places
+------------------------------------------
+Version 2.0.0.4 updated 08/29/2018
+Added cover reports for 18 and 30 step maps
+Skipped fisrt 1 read for 18 step length chart
+Skipped first 2 reads for 30 steps length chart
+Added Report settings screen
+-----------------------------------------
+
+Version 2.0.0.3 updated 08/16/2018
+Look for Mapdate in map xml file and determine to use either D76 for Zero10 if earlier than 08/14/2048
+or use D77 if eqaul to or greater than 08/14/2018
+Set default folders for calibration CSV and Raw Lane CSV files
+Calcualte Zero for L1
+Created PDF instructions to  retrive lane mapper data from flash card in PLC
+-------------------------------------------------------------
+
+Version 2.0.0.2 updated 08/2/2018
+Adjusted Arrow Image slope scale between slope charts
+Changed Inch Factor to 0.00004921259
+
+----------------------------------------
+Version 2.0.0.1 updated 07/19/2018
+Adjusted arrows on slope chart
+removed right scale on slope chart
+adjusted size  and colors of 3D chart
+Added USBC report templates: Wood, Synthetic, Multi
+---------------------------------------------
+Version 2.0.0.0 updated 07/18/2018
+Initial rewrite
+---------------------------------------------------

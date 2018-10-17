@@ -1,0 +1,1 @@
+@NetSh AdvFirewall Show AllProfiles State|Find /I " ON">Nul&&(@Echo Is On)||@Echo Is Off

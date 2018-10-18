@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $file_type = $_FILES['files']['type'][$i];
             $file_size = $_FILES['files']['size'][$i];
             $file_ext = strtolower(end(explode('.', $_FILES['files']['name'][$i])));
-            $file_name_toSave = strstr($file_name, '.', true)."_".date("Y-m-d-H-i-s").".".$file_ext ;
+            $file_name_toSave = $file_name;
             if (!file_exists($path."/".$company)) {
                 mkdir($path."/".$company, 0777, true);
                 mkdir($path."/".$company."/files", 0777, true);

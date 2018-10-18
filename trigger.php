@@ -7,6 +7,8 @@ $beforefile = $_GET['beforefile'];
 $afterfile = $_GET['afterfile'];
 $lanestocompare = $_GET['lanestocompare'];
 
+
+
 $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
@@ -42,6 +44,14 @@ $num_rows = mysqli_num_rows($result);
   }
 $db->close();
 
+$xml=simplexml_load_file("uploads/Kegel_LLC/files/".$filename) or die("Error: Cannot create object");
+$FormatDateForReportTitle = $xml->children()->Mappers[0]->Date;
+$FormatDateForReportTitle = substr($FormatDateForReportTitle, 0, strpos($FormatDateForReportTitle, "T"));
+
+$FormatDateForReportTitle = str_replace('-', '', $FormatDateForReportTitle);
+$FormatDateForReportTitle = strtotime($FormatDateForReportTitle);
+$FormatDateForReportTitle = date("Ynd",$FormatDateForReportTitle);
+$fileNameNoExt = substr($filename, 0, strpos($filename, "."));
 $company = str_replace(' ', '_', $company);
 $reportPath = 'uploads/'. $company.'/reports/';
 
@@ -64,23 +74,24 @@ $args = $args.' '.$scoreSystem;
 if($report == 'Lane Guide only Report'){
   //$args = $args. ' 14';
   $args = $args.' 1 0 0 0 0 '.$distances.' '.$usbcoption.' 0 0 0 0 0 0';
-  $reportName = $reportTitle."_LaneMapGuideReport.pdf";
+  $reportName = $FormatDateForReportTitle."_LaneMapGuide_" .$fileNameNoExt.".pdf";
 
 }
 
 if($report == 'Lane Guide Report with cover'){
   $args = $args.' 0 1 0 0 0 '.$distances.' '.$usbcoption.' 0 0 0 0 0 0';
-  $reportName = $reportTitle."_LaneMapGuideReport_C.pdf";
+  $reportName = $FormatDateForReportTitle."_LaneMapGuide_C_" .$fileNameNoExt.".pdf";
 }
 
 if($report == 'Lane map Only Report'){
   $args = $args.' 0 0 1 0 0 '.$distances.' '.$usbcoption.' 0 0 0 0 0 0';
-  $reportName = $reportTitle."_LaneMapReport.pdf";
+  $reportName = $FormatDateForReportTitle."_LaneMap_" .$fileNameNoExt.".pdf";
+
 }
 
 if($report == 'Lane map With Cover Report'){
   $args = $args.' 0 0 0 1 0 '.$distances.' '.$usbcoption.' 0 0 0 0 0 0';
-  $reportName = $reportTitle."_LaneMapReport_C.pdf";
+  $reportName = $FormatDateForReportTitle."_LaneMap_C_" .$fileNameNoExt.".pdf";
 }
 
 if($report == 'Export All Readings to excel'){

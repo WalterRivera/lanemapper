@@ -328,7 +328,7 @@ function upload(){
       $("#wrong-format").hide();
       window.location.href = "dashboard.php";
     }
-      console.log(response);
+      //alert(response.status);
 
   });
 }

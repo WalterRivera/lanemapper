@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
             if (empty($errors) && $all_files > 0) {
+                deleteOldFiles($file_name,$company,$reportTitle);
                 move_uploaded_file($file_tmp, $file);
             }
         }
@@ -91,6 +92,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($uploaded != true){
   http_response_code(422);
+}
+
+
+function deleteOldFiles($filename , $company , $reportTitle){
+
+  $xml=simplexml_load_file("uploads/Kegel_LLC/files/".$filename) or die("Error: Cannot create object");
+  $FormatDateForReportTitle = $xml->children()->Mappers[0]->Date;
+  $FormatDateForReportTitle = substr($FormatDateForReportTitle, 0, strpos($FormatDateForReportTitle, "T"));
+  $FormatDateForReportTitle = str_replace('-', '', $FormatDateForReportTitle);
+  $FormatDateForReportTitle = strtotime($FormatDateForReportTitle);
+  $FormatDateForReportTitle = date("Ynd",$FormatDateForReportTitle);
+  $fileNameNoExt = substr($filename, 0, strpos($filename, "."));
+
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$FormatDateForReportTitle."_LaneMapGuide_" .$fileNameNoExt.".pdf";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$FormatDateForReportTitle."_LaneMapGuide_C_" .$fileNameNoExt.".pdf";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$FormatDateForReportTitle."_LaneMap_" .$fileNameNoExt.".pdf";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$FormatDateForReportTitle."_LaneMap_C_" .$fileNameNoExt.".pdf";
+  unlink($fileToDelete);
+  $name = strstr($filename, '.', true);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$name."_USBCReportAllReadings.xlsx";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$name."_Wood.xlsx";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$name."_USBC Synthetic.xlsx";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$name."_USBC Multi.xlsx";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$name."_USBCReadings.xlsx";
+  unlink($fileToDelete);
+  $fileToDelete = 'uploads/'.$company.'/reports/'.$reportTitle."_CompareLaneMapReport.pdf";
+
+  $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+  mysqli_set_charset($db, "utf8");
+    if (mysqli_connect_errno()){
+      echo 'Error In Database Connection';
+      exit;
+    }
+  $db->select_db('uploads');
+  $query = "DELETE from uploads WHERE filename = '". $filename ."'";
+
+  if(mysqli_query($db, $query)){
+
+  }else{
+    printf("Errormessage: %s\n", mysqli_error($db));
+  }
+  $db->close();
 }
 
 ?>

@@ -148,8 +148,31 @@ if (substr(php_uname(), 0, 7) == "Windows"){
 }
 else {
     exec($cmd . " > /dev/null &");
-
 }
+
+
+
+
+unlink($reportPath);
+$db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+mysqli_set_charset($db, "utf8");
+  if (mysqli_connect_errno()){
+    echo 'Error In Database Connection';
+    exit;
+  }
+$db->select_db('reports');
+$query = "DELETE from reports WHERE path_report = '". $reportPath ."'";
+
+if(mysqli_query($db, $query)){
+
+}else{
+  printf("Errormessage: %s\n", mysqli_error($db));
+}
+$db->close();
+
+
+
+
 
 
 $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');

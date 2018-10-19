@@ -27,7 +27,6 @@ $num_rows = mysqli_num_rows($result);
     $path = $row['path'];
     $logopath = $row['logopath'];
     $reportTitle = $row['report_title'];
-    $reportDate = $row['report_date'];
     $reportLocation = $row['report_location'];
     $numberLanes = $row['number_lanes'];
     $laneSurface = $row['lane_surface'];

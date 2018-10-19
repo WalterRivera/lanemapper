@@ -13,7 +13,6 @@ $lastname = $_SESSION['lname'];
 $company = $_SESSION['company'];
 $company = str_replace(' ', '_', $company);
 $reportTitle = $_GET['rt'];
-$reportDate = $_GET['rd'];
 $reportLocation = $_GET['rl'];
 $numberLanes = $_GET['nl'];
 $laneSurface = $_GET['ls'];
@@ -78,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           }
 
           $db->select_db('uploads');
-          $query = "insert into uploads (`id`, `userid`, `company`, `filename`, `path`, `logopath`, `report_title`, `report_date`, `report_location`, `number_lanes`, `lane_surface`, `lsyear_installation`, `ls_levelers` , `underlayment_year` , `head_replace`, `pin_decks`, `pinsetter`, `score_system`)
+          $query = "insert into uploads (`id`, `userid`, `company`, `filename`, `path`, `logopath`, `report_title`, `report_location`, `number_lanes`, `lane_surface`, `lsyear_installation`, `ls_levelers` , `underlayment_year` , `head_replace`, `pin_decks`, `pinsetter`, `score_system`)
                     values
-                    (NULL, '$id', '$company', '$fileNameToSave', '$pathtosave', '$logopathtosave' , '$reportTitle', '$reportDate', '$reportLocation', '$numberLanes', '$laneSurface', '$laneSurfaceYearInstallation', '$laneSurfaceLevelers' ,'$underlaymentYear', '$headAreaReplace', '$pinDecks', '$pinsetters', '$scoreSystem')";
+                    (NULL, '$id', '$company', '$fileNameToSave', '$pathtosave', '$logopathtosave' , '$reportTitle', '$reportLocation', '$numberLanes', '$laneSurface', '$laneSurfaceYearInstallation', '$laneSurfaceLevelers' ,'$underlaymentYear', '$headAreaReplace', '$pinDecks', '$pinsetters', '$scoreSystem')";
           if(mysqli_query($db,$query)){
             $uploaded = true;
           }else{

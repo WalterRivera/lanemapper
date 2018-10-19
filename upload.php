@@ -104,14 +104,6 @@ $company = $_SESSION['company'];
           </div>
 
           <div class="form-group">
-            <label for="someinfo" style="float:left;">Report Date</label>
-            <input type="text" class="form-control" id="reportDate" aria-describedby="emailHelp" placeholder="MM/DD/YYYY" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Report Date Required
-            </div>
-          </div>
-
-          <div class="form-group">
             <label for="someinfo" style="float:left;">Report Location</label>
             <input type="text" class="form-control" id="reportLocation" aria-describedby="emailHelp" placeholder="Lake Wales, FL" required>
             <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
@@ -279,7 +271,7 @@ function upload(){
   });
 
   var reportTitle = document.getElementById('reportTitle').value;
-  var reportDate = document.getElementById('reportDate').value;
+
   var reportLocation = document.getElementById('reportLocation').value;
   var NumberLanes = document.getElementById('NumberLanes').value;
   var laneSurface = document.getElementById('laneSurface').value;
@@ -291,7 +283,7 @@ function upload(){
   var scoreSystem = document.getElementById('scoreSystem').value;
 
 
-  var querystring = "?rt=" + reportTitle + "&rd=" + reportDate + "&rl=" + reportLocation + "&nl=" + NumberLanes +
+  var querystring = "?rt=" + reportTitle + "&rl=" + reportLocation + "&nl=" + NumberLanes +
   "&ls=" + laneSurface + "&lsyi=" + laneSurfaceYearInstallation + "&har=" + headAreaReplace + "&pd=" + pinDecks +
   "&ps=" + pinsetters + "&ss=" + scoreSystem + "&lsl=" + lanesurfacelevelers + "&uly=" + Underlaymentyear;
 

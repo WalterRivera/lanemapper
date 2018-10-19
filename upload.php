@@ -15,7 +15,11 @@ $company = $_SESSION['company'];
 ?>
 
 <?php require('headers.php'); ?>
+<head>
+  <link rel="stylesheet" href="css/logincss.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<head>
 <body>
   <div class="card text-center">
     <div class="card-header" style="background-color: #f90; font-weight:bold;">
@@ -48,169 +52,178 @@ $company = $_SESSION['company'];
 
     <div class="card-body" style="background-color:#36454f; color:white;">
 
+      <div class="row" >
 
-      <div class="row" style="margin-top:10px;">
 
-        <div class="col-md-4"></div>
 
-        <div class="col-md-4">
-            <img src="images/lanemapper.png" class="rounded" alt="LaneMapper" style="width:300px; height:auto;">
-        </div>
+      <div class="col-md-2">
+      </div>
 
-        <div class="col-md-4"></div>
+      <div class="col-md-8">
+        <div class="container">
+          <section  class="login-form">
+            <form class="needs-validation" enctype='multipart/form-data' novalidate onsubmit="return false" role="login">
+              <div class="row" >
+
+              <div class="col-md-6">
+                <div class="form-group" >
+                  <label for="someinfo" style="float:left; font-weight:bold; ">Upload Lane Mapper XML File</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="xmlfile" name="xmlfile" multiple required>
+                    <label class="custom-file-label" for="validatedCustomFile" >Choose file...</label>
+
+                    <div id="wrong-format" class="invalid-feedback" style="display:none; color:#f90; font-weight:bold;">
+                      Only XML Files Will be Accepted
+                    </div>
+
+                  </div>
+                </div>
+
+
+
+                <div class="form-group" style="margin-top:30px;">
+                  <label for="someinfo" style="float:left;font-weight:bold; ">Upload Logo</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="logofile" name="logofile" multiple>
+                    <label class="custom-file-label" for="validatedCustomFile" >Choose Logo...</label>
+
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top:20px;">
+                  <label for="someinfo" style="float:left;font-weight:bold; ">Report Title</label>
+                  <input type="text" class="form-control"  id="reportTitle" aria-describedby="emailHelp" placeholder="Topography Report" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Report Title Required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Report Location</label>
+                  <input type="text" class="form-control" id="reportLocation" aria-describedby="emailHelp" placeholder="Lake Wales, FL" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Location Required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Number of Lanes</label>
+                  <input type="text" class="form-control" id="NumberLanes" aria-describedby="emailHelp" placeholder="32" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Number of Lanes Required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Lane Surface</label>
+                  <input type="text" class="form-control" id="laneSurface" aria-describedby="emailHelp" placeholder="Wood" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Lane Surface Required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Lane Surface Year of Installation</label>
+                  <input type="text" class="form-control" id="laneSurfaceYearInstallation" aria-describedby="emailHelp" placeholder="2000" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Year of Installation Required
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Lane Surface Levelers and Underlayment</label>
+                  <input type="text" class="form-control" id="laneSurfacelevelers" aria-describedby="emailHelp" placeholder="Wood" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Lane Surface Levelers and Underlayment Required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Underlayment Year Installation</label>
+                  <input type="text" class="form-control" id="underlaymentYearInstallation" aria-describedby="emailHelp" placeholder="2000" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Underlayment Year Installation required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Head Area Replace</label>
+
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" style="background-color:#f90; color:black; font-weight:bold;" for="inputGroupSelect01">Options</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01">
+
+                      <option value="1">True</option>
+                      <option selected value="2">False</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Pin Decks</label>
+                  <input type="text" class="form-control" id="pinDecks" aria-describedby="emailHelp" placeholder="DBA" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Pin Decks Required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Pinsetters</label>
+                  <input type="text" class="form-control" id="pinsetters" aria-describedby="emailHelp" placeholder="AMF" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Pinsetters Required
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="someinfo" style="float:left;font-weight:bold;">Score System</label>
+                  <input type="text" class="form-control" id="scoreSystem" aria-describedby="emailHelp" placeholder="Qubica" required>
+                  <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
+                    Score System Required
+                  </div>
+
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit" style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; margin-top:50px;" >Next</button>
+                </div>
+              </div>
+
+
+
+
+
+
+
+          </form>
+        </div class="container">
+      </section  class="login-form">
+
+      </div>
+
+      <div class="col-md-2">
+      </div>
+
+      </div>
+
+
 
     </div>
 
-      <div class="row" style="margin-top:30px;">
 
-
-
-      <div class="col-md-4">
-      </div>
-
-      <div class="col-md-4">
-        <form class="needs-validation" enctype='multipart/form-data' novalidate onsubmit="return false">
-
-          <div class="form-group" >
-            <label for="someinfo" style="float:left;">Upload Lane Mapper XML File</label>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="xmlfile" name="xmlfile" multiple required>
-              <label class="custom-file-label" for="validatedCustomFile" >Choose file...</label>
-
-              <div id="wrong-format" class="invalid-feedback" style="display:none; color:#f90; font-weight:bold;">
-                Only XML Files Will be Accepted
-              </div>
-
-            </div>
-          </div>
-
-
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Upload Logo</label>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="logofile" name="logofile" multiple>
-              <label class="custom-file-label" for="validatedCustomFile" >Choose Logo...</label>
-
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Report Title</label>
-            <input type="text" class="form-control"  id="reportTitle" aria-describedby="emailHelp" placeholder="Topography Report" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Report Title Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Report Location</label>
-            <input type="text" class="form-control" id="reportLocation" aria-describedby="emailHelp" placeholder="Lake Wales, FL" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Location Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Number of Lanes</label>
-            <input type="text" class="form-control" id="NumberLanes" aria-describedby="emailHelp" placeholder="32" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Number of Lanes Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Lane Surface</label>
-            <input type="text" class="form-control" id="laneSurface" aria-describedby="emailHelp" placeholder="Wood" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Lane Surface Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Lane Surface Year of Installation</label>
-            <input type="text" class="form-control" id="laneSurfaceYearInstallation" aria-describedby="emailHelp" placeholder="2000" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Year of Installation Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Lane Surface Levelers and Underlayment</label>
-            <input type="text" class="form-control" id="laneSurfacelevelers" aria-describedby="emailHelp" placeholder="Wood" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Lane Surface Levelers and Underlayment Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Underlayment Year Installation</label>
-            <input type="text" class="form-control" id="underlaymentYearInstallation" aria-describedby="emailHelp" placeholder="2000" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Underlayment Year Installation required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Head Area Replace</label>
-
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <label class="input-group-text" style="background-color:#f90; color:black; font-weight:bold;" for="inputGroupSelect01">Options</label>
-              </div>
-              <select class="custom-select" id="inputGroupSelect01">
-
-                <option value="1">True</option>
-                <option selected value="2">False</option>
-              </select>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Pin Decks</label>
-            <input type="text" class="form-control" id="pinDecks" aria-describedby="emailHelp" placeholder="DBA" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Pin Decks Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Pinsetters</label>
-            <input type="text" class="form-control" id="pinsetters" aria-describedby="emailHelp" placeholder="AMF" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Pinsetters Required
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="someinfo" style="float:left;">Score System</label>
-            <input type="text" class="form-control" id="scoreSystem" aria-describedby="emailHelp" placeholder="Qubica" required>
-            <div class="invalid-feedback" style="color:#f90; font-weight:bold;">
-              Score System Required
-            </div>
-          </div>
-
-
-          <button class="btn btn-primary btn-lg btn-block" type="submit"  style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; float:right;" >Next</button>
-      </form>
-      </div>
-      </div>
-
-      <div class="col-md-4">
-      </div>
-
-      </div>
-      <div class="card-footer" style="background-color: #f90; font-weight:bold; margin-top:20px;">
-        CALL CENTER: USA TOLL FREE: (800) 280 BOWL (2695)
-        <br>
-        Phone: +1 (863) 734 0200 | Fax: +1 (863) 734 0204
-        <br>
-        1951 Longleaf Blvd. Lake Wales, FL 33859 USA
-        <br>
-        <img src="images/black.png" class="rounded" alt="LaneMapper" style="width:90px; height:auto;">
-      </div>
-
-    </div>
-
+  </div>
+  <div class="card-footer" style="background-color: #f90; font-weight:bold; ">
+    CALL CENTER: USA TOLL FREE: (800) 280 BOWL (2695)
+    <br>
+    Phone: +1 (863) 734 0200 | Fax: +1 (863) 734 0204
+    <br>
+    1951 Longleaf Blvd. Lake Wales, FL 33859 USA
+    <br>
+    <img src="images/black.png" class="rounded" alt="LaneMapper" style="width:90px; height:auto;">
   </div>
 
 </body>

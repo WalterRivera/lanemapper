@@ -63,7 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
             if (empty($errors) && $all_files > 0) {
+              if($file_ext == 'xml'){
                 deleteOldFiles($file_name,$company,$reportTitle);
+              }
                 move_uploaded_file($file_tmp, $file);
             }
         }

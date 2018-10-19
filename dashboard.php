@@ -64,17 +64,29 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
 
                  distances = document.getElementById('distances3').value;
                  usbcoption = 1;
+                 if(/^(([^A-Za-z]\d+,)+([^A-Za-z]\d+,)+([^A-Za-z]\d))*$/.test(distances) == false || distances == '' || distances[distances.length-1] == ','){
+                   alert("Please Enter 3 distances divided by commas. Ex. 12,25,46");
+                   return;
+                 }
 
               }
 
               if(option == "Reports for USBC (Synthetic)"){
                  distances = document.getElementById('distances5').value;
                  usbcoption = 2;
+                 if(/^(([^A-Za-z]\d+,)+([^A-Za-z]\d+,)+([^A-Za-z]\d+,)+([^A-Za-z]\d+,)+([^A-Za-z]\d))*$/.test(distances) == false || distances == '' || distances[distances.length-1] == ','){
+                   alert("Please Enter 5 distances divided by commas. Ex. 12,25,38,46,57");
+                   return;
+                 }
               }
 
               if(option == "Reports for USBC (Multi)"){
                  distances = document.getElementById('distances5').value;
                  usbcoption = 3;
+                 if(/^(([^A-Za-z]\d+,)+([^A-Za-z]\d+,)+([^A-Za-z]\d+,)+([^A-Za-z]\d+,)+([^A-Za-z]\d))*$/.test(distances) == false || distances == '' || distances[distances.length-1] == ','){
+                   alert("Please Enter 5 distances divided by commas. Ex. 12,25,38,46,57");
+                   return;
+                 }
               }
 
               if(option == "Before and After Comparison"){
@@ -82,6 +94,10 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                 var afterfile = "";
                 var lanestocompare = "";
                 lanestocompare = document.getElementById('lanestocompare').value;
+                if(/^([^A-Za-z]\d*)$|(^(?!.*,,)(([^A-Za-z]\d*,)+([^A-Za-z]\d*)+)$)/.test(lanestocompare) == false || lanestocompare == '0' || lanestocompare == '' || lanestocompare[lanestocompare.length - 1] == ','){
+                  alert("Please enter lanes to compare divided by comas if more than 1 lane. Ex. 1,7,8,10");
+                  return;
+                }
 
 
                 $('.custom-control-input:checkbox:checked').each(function(){
@@ -460,6 +476,20 @@ $('.custom-control-input').on('change', function() {
    if($('.custom-control-input:checked').length > 2) {
        this.checked = false;
    }
+});
+
+$(function() {
+    $('#distances3').on('keypress', function(e) {
+        if (e.which == 32)
+            return false;
+    });
+});
+
+$(function() {
+    $('#distances5').on('keypress', function(e) {
+        if (e.which == 32)
+            return false;
+    });
 });
 </script>
 

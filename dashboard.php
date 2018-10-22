@@ -10,6 +10,7 @@ $firstname = $_SESSION['fname'];
 $lastname = $_SESSION['lname'];
 $company = $_SESSION['company'];
 $companyNoSpaces = str_replace(' ', '_', $company);
+$filter = $_SESSION['filter'];
 
 //somechange
 //verify Report status
@@ -126,6 +127,40 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
 
 
 
+    }
+
+    function filterdashboard(filename){
+      ajaxRequest = new XMLHttpRequest();
+      ajaxRequest.onreadystatechange = function(){
+        if(ajaxRequest.readyState == 4){
+
+          var status = ajaxRequest.responseText;
+          //alert(status);
+           $('#MainContent').load('dashboard.php #MainContent');
+
+        }
+      }
+
+      var queryString = "?filter=" + filename;
+      ajaxRequest.open("GET", "setfilter.php" + queryString, true);
+      ajaxRequest.send(null);
+    }
+
+    function removefilter(){
+      ajaxRequest = new XMLHttpRequest();
+      ajaxRequest.onreadystatechange = function(){
+        if(ajaxRequest.readyState == 4){
+
+          var status = ajaxRequest.responseText;
+          //alert(status);
+           $('#MainContent').load('dashboard.php #MainContent');
+
+        }
+      }
+
+      var queryString = "?filter=";
+      ajaxRequest.open("GET", "setfilter.php" + queryString, true);
+      ajaxRequest.send(null);
     }
 
     $(document).ready(
@@ -288,10 +323,10 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" style="font-weight:bold; color:#36454f" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <?php echo $company ?>
+                  <?php echo $company; ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" style="font-weight:bold;"href="#">My Account</a>
+                  <a class="dropdown-item" style="font-weight:bold;"href="myaccount.php">My Account</a>
                   <a class="dropdown-item" style="font-weight:bold;"href="#">Contact Us</a>
                   <a class="dropdown-item" style="font-weight:bold;"href="logout.php">Log out</a>
                 </div>
@@ -305,7 +340,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
       <div class="container">
         <section  class="login-form">
           <form  onsubmit="return false;"  role="login">
-            <p>Uploaded Files</p>
+            <p style="font-weight:bold;">Uploaded Files</p>
             <div id="MainContent">
             <table  class="table table-sm ">
 
@@ -340,7 +375,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                         ?>
                         <tr>
                           <th style="width: 10%" scope="row"><?php echo $id; ?></th>
-                          <td style="width: 40%"><?php echo $filename; ?></td>
+                          <td style="width: 40%"><a href="#" onclick="filterdashboard('<?php echo $id;?>')" style="color:#f90; font-weight:bold;"><?php echo $filename; ?></a></td>
                           <td style="width: 25%"><?php echo date("F j, Y @ g:i A",$phpdate); ?></td>
                           <td style="font-weight:bold;color:green;">Valid</td>
                           <td ><a href="#" style="color:#f90; font-weight:bold;" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $id ?>" >Request Report</a></td>
@@ -353,7 +388,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                   </tbody>
                 </table>
 
-                <p style="margin-top:100px;">Requested Reports</p>
+
                 <?php
                   foreach(glob($reportpath.'/*.*') as $file) {
 
@@ -373,9 +408,22 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                     }
                     $db->close();
                   }
-                 ?>
-                <table class="table table-sm">
 
+                  if($filter != ""){
+                    ?>
+                    <p style="margin-top:100px; font-weight:bold;">Requested Reports (Filter by File ID: <?php echo $filter; ?> | <a href="#" onclick="removefilter()" style="color:#f90;font-weight:bold;">Remove Filter</a> )</p>
+
+                    <?php
+
+                  }else{
+                    ?>
+                    <p style="margin-top:100px; font-weight:bold;">Requested Reports</p>
+                    <?php
+                  }
+                 ?>
+
+
+                <table class="table table-sm">
                   <thead>
                     <tr>
                       <th scope="col">File ID</th>
@@ -388,6 +436,12 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                   <tbody>
                     <?php
 
+                      if($filter == ""){
+                        $query = "SELECT * FROM reports WHERE company='".$company."' order by id desc";
+                      }else{
+                        $query = "SELECT * FROM reports WHERE company='".$company."' AND file_id=".$filter." order by id desc";
+                      }
+
                       $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
                       mysqli_set_charset($db, "utf8");
                         if (mysqli_connect_errno()){
@@ -395,7 +449,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                           exit;
                         }
                       $db->select_db('reports');
-                      $query = "SELECT * FROM reports WHERE company='".$company."' order by id desc";
+
                       $result = mysqli_query($db,$query) or die(mysqli_error());
                       $num_rows = mysqli_num_rows($result);
                         if($num_rows > 0){
@@ -424,13 +478,6 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                       </tbody>
                     </table>
                   </div>
-
-
-
-
-
-
-
               </form>
 
 

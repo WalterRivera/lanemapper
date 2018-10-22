@@ -41,7 +41,7 @@ $company = $_SESSION['company'];
             <?php echo $company ?>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" style="font-weight:bold;" href="#">My Account</a>
+            <a class="dropdown-item" style="font-weight:bold;" href="myaccount.php">My Account</a>
             <a class="dropdown-item" style="font-weight:bold;"href="#">Contact Us</a>
             <a class="dropdown-item" style="font-weight:bold;"href="logout.php">Log out</a>
           </div>

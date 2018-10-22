@@ -72,7 +72,7 @@
 
                   <button onclick="verifyCredentials()"  class="btn btn-lg btn-primary btn-block" style="background-color: #f90; border-color:#f90; color:black; font-weight:bold;">Login</button>
                   <div>
-                    <a href="#" style="color:#f90; font-weight:bold;">Create account</a> or <a href="#" style="color:#f90; font-weight:bold;">reset password</a>
+                    <!-- <a href="#" style="color:#f90; font-weight:bold;">Reset Password</a> -->
                   </div>
 
                 </form>

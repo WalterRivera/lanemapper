@@ -143,6 +143,7 @@ $cmd = 'KegelLaneMapper.exe 0 '.$args;
 //echo $cmd;
 
 if (substr(php_uname(), 0, 7) == "Windows"){
+
     pclose(popen("start /B ". $cmd, "r"));
 
 }
@@ -183,10 +184,11 @@ mysqli_set_charset($db, "utf8");
   }
 
   $db->select_db('reports');
+  $requested_on = date("Y-m-d H:i:s");
   $company = str_replace('_', ' ', $company);
-  $query = "insert into reports (`id`, `file_id`, `company`, `path_report`, `status`, `report_name`)
+  $query = "insert into reports (`id`, `file_id`, `company`, `path_report`, `status`, `report_name` , `requested_on`)
             values
-            (NULL, '$id', '$company', '$reportPath', 'Processing', '$reportName')";
+            (NULL, '$id', '$company', '$reportPath', 'Processing', '$reportName' , '$requested_on')";
   if(mysqli_query($db,$query)){
     $uploaded = true;
   }else{

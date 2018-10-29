@@ -15,6 +15,58 @@ $company = $_SESSION['company'];
 ?>
 
 <?php require('headers.php'); ?>
+
+<script language="javascript" type="text/javascript">
+
+  function submitchangepassword(){
+    var beforepass = $("#beforepass").val();
+    var newpass = $("#newpass").val();
+    var newpass2 = $("#newpass2").val();
+    $("#passerror").text("");
+    $("#passok").text("");
+    $("#passerror").hide();
+    $("#passok").hide();
+
+    if(newpass == '' || newpass2 == '' || beforepass == ''){
+      $("#passerror").text("Need to Fill all Passwords Information");
+      $("#passerror").show();
+      return;
+    }
+
+    if(newpass != newpass2){
+      $("#passerror").text("New Password Does Not Match Confirmation Password");
+      $("#passerror").show();
+      return;
+    }
+
+    ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.onreadystatechange = function(){
+      if(ajaxRequest.readyState == 4){
+
+        var status = ajaxRequest.responseText;
+        //alert(status);
+        if(status != 'ok'){
+          $("#passerror").text("Wrong old Password.");
+          $("#passerror").show();
+        }else{
+          $("#passok").text("Password Changed Succesfully.");
+          $("#passok").show();
+        }
+      }
+    }
+
+    var queryString = "?old=" + beforepass + "&new=" + newpass;
+    ajaxRequest.open("GET", "changepassword.php" + queryString, true);
+    ajaxRequest.send(null);
+  }
+
+  function showchangepassword(){
+    $("#changepass").show();
+  }
+
+
+</script>
+
 <head>
   <link rel="stylesheet" href="css/logincss.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -72,10 +124,39 @@ $company = $_SESSION['company'];
 
               <div class="col-md-5">
                 <p style="font-weight:bold;">Options</p><br>
-                <a href="#" style="color:#f90; font-weight:bold;">Change Account Information</a><br>
-                <a href="#" style="color:#f90; font-weight:bold;">Change Password</a>
+                <a href="#" onclick="showchangepassword()" style="color:#f90; font-weight:bold;">Change Password</a>
+
+                <div id="changepass" style="margin-top:50px; display:none;">
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">Old Password</label>
+                    <input type="password" class="form-control" id="beforepass" aria-describedby="emailHelp" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">New Password</label>
+                    <input type="password" class="form-control" id="newpass" aria-describedby="emailHelp" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">New Password Confirmation</label>
+                    <input type="password" class="form-control" id="newpass2" aria-describedby="emailHelp" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" id="passerror" style="float:left;font-weight:bold; color:red; display:none;"></label>
+                    <label for="someinfo" id="passok" style="float:left;font-weight:bold; color:green; display:none;"></label>
+                  </div>
+
+                  <div class="form-group">
+                      <button class="btn btn-primary btn-lg btn-block" onclick="submitchangepassword()" type="submit" style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; margin-top:10px;" >Change Password</button>
+                  </div>
+
+                </div>
+
 
               </div>
+
+
 
               <div class="col-md-5" >
                 <p style="font-weight:bold;">Account Information</p>
@@ -101,10 +182,14 @@ $company = $_SESSION['company'];
                 </div>
               </fieldset>
 
+              </div>
+
               <div class="col-md-1">
               </div>
 
             </div>
+
+
 
           </form>
         </section  class="login-form">
@@ -132,140 +217,3 @@ $company = $_SESSION['company'];
 </body>
 
 </html>
-
-
-
-<script>
-
-
-
-  $('#xmlfile').on('change',function(){
-      //get the file name
-      var fileName = $(this).val();
-      //replace the "Choose a file" label
-      $(this).next('.custom-file-label').html(fileName);
-  })
-
-  $('#logofile').on('change',function(){
-      //get the file name
-      var fileName = $(this).val();
-      //replace the "Choose a file" label
-      $(this).next('.custom-file-label').html(fileName);
-  })
-
-
-</script>
-
-<script>
-// Example starter JavaScript for disabling form submissions if there are invalid fields
-(function() {
-  'use strict';
-  window.addEventListener('load', function() {
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.getElementsByClassName('needs-validation');
-    // Loop over them and prevent submission
-
-    var validation = Array.prototype.filter.call(forms, function(form) {
-      form.addEventListener('submit', function(event) {
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-        }else{
-          upload();
-        }
-        form.classList.add('was-validated');
-      }, false);
-    });
-  }, false);
-})();
-
-
-function upload(){
-  var headAreaReplace = "";
-  $( "select option:selected" ).each(function() {
-    headAreaReplace += $( this ).text();
-  });
-
-  var reportTitle = document.getElementById('reportTitle').value;
-
-  var reportLocation = document.getElementById('reportLocation').value;
-  var NumberLanes = document.getElementById('NumberLanes').value;
-  var laneSurface = document.getElementById('laneSurface').value;
-  var laneSurfaceYearInstallation = document.getElementById('laneSurfaceYearInstallation').value;
-  var lanesurfacelevelers = document.getElementById('laneSurfacelevelers').value;
-  var Underlaymentyear = document.getElementById('underlaymentYearInstallation').value;
-  var pinDecks = document.getElementById('pinDecks').value;
-  var pinsetters = document.getElementById('pinsetters').value;
-  var scoreSystem = document.getElementById('scoreSystem').value;
-
-
-  var querystring = "?rt=" + reportTitle + "&rl=" + reportLocation + "&nl=" + NumberLanes +
-  "&ls=" + laneSurface + "&lsyi=" + laneSurfaceYearInstallation + "&har=" + headAreaReplace + "&pd=" + pinDecks +
-  "&ps=" + pinsetters + "&ss=" + scoreSystem + "&lsl=" + lanesurfacelevelers + "&uly=" + Underlaymentyear;
-
-
-   const url = 'process.php' + querystring;
-  // const form = document.querySelector('input');
-  //
-   const files = document.querySelector('[type=file]').files;
-  // const formData = new FormData();
-  // alert(files.length);
-  //
-  // for (let i = 0; i < files.length; i++) {
-  //     let file = files[i];
-  //
-  //
-  //     formData.append('files[]', file);
-  // }
-
-  var file = $("#xmlfile").prop("files")[0];
-  var logo = $("#logofile").prop("files")[0];
-  var formData = new FormData();
-  formData.append("files[]", file);
-  formData.append("files[]", logo);
-
-
-  fetch(url, {
-      method: 'POST',
-      body: formData
-  }).then(response => {
-    if (response.status === 422) {
-      $("#wrong-format").show();
-
-    }else{
-      $("#wrong-format").hide();
-      window.location.href = "dashboard.php";
-    }
-      //alert(response.status);
-
-  });
-}
-</script>
-
-<?php
-
-    // $cmd = 'WindowsApplication1.exe -t Lanes:1-10 add sjasdw';
-    //
-    //
-    // if (substr(php_uname(), 0, 7) == "Windows"){
-    //     pclose(popen("start /B ". $cmd, "r"));
-    //     echo "Program Executed on Windows Environment...";
-    //     echo "<br>";
-    // }
-    // else {
-    //     exec($cmd . " > /dev/null &");
-    //     echo 'Program Executed on Linux Environment...\r\n';
-    // }
-    //
-    // echo 'An Email Will Reach you shortly.'
-
-
-    // error_reporting(E_ALL);
-    //
-    // /* Add redirection so we can get stderr. */
-    // $handle = popen('C:\WindowsApplication1.exe 2>&1', 'r');
-    // echo "'$handle'; " . gettype($handle) . "\n";
-    // $read = fread($handle, 2096);
-    // echo $read;
-    // pclose($handle);
-?>

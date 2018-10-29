@@ -5,12 +5,19 @@ session_start();
 if(!isset($_SESSION['userid'])){
   header('Location: login.php');
 }
-
+require_once('classes/log.php');
 $id = $_SESSION['userid'];
 $email = $_SESSION['email'];
 $firstname = $_SESSION['fname'];
 $lastname = $_SESSION['lname'];
 $company = $_SESSION['company'];
+
+$log = new log();
+
+$log->setCompany($company);
+$log->setUserFname($firstname);
+$log->setUserLname($lastname);
+
 $company = str_replace(' ', '_', $company);
 $reportTitle = $_GET['rt'];
 $reportLocation = $_GET['rl'];
@@ -24,6 +31,9 @@ $scoreSystem = $_GET['ss'];
 $laneSurfaceLevelers = $_GET['lsl'];
 $underlaymentYear = $_GET['uly'];
 $accessDatabase = true;
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['files'])) {
@@ -44,6 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!in_array($file_ext, $extensions)) {
                 $errors[] = 'Extension not allowed: ' . $file_name . ' ' . $file_type;
                 $accessDatabase = false;
+                $log->setInformation('User Try to Upload File With Wrong Extension. EXT= '.$file_ext);
+                $log->setType('MANAGED_ERROR');
+                $log->save();
                 http_response_code(422);
                 die();
 
@@ -71,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
               if (empty($errors) && $all_files > 0) {
                 if($file_ext == 'xml' || $file_ext == 'XML'){
-                  //deleteOldFiles($file_name,$company,$reportTitle);
+                  deleteOldFiles($file_name,$company,$reportTitle);
 
                 }
                   move_uploaded_file($file_tmp, $file);
@@ -93,6 +106,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       (NULL, '$id', '$company', '$fileNameToSave', '$pathtosave', '$uploaded_on' , '$logopathtosave' , '$reportTitle', '$reportLocation', '$numberLanes', '$laneSurface', '$laneSurfaceYearInstallation', '$laneSurfaceLevelers' ,'$underlaymentYear', '$headAreaReplace', '$pinDecks', '$pinsetters', '$scoreSystem')";
             if(mysqli_query($db,$query)){
               $uploaded = true;
+              $log->setInformation('User Upload New File. File= '.$fileNameToSave);
+              $log->setType('SUCCESS');
+              $log->save();
+
             }else{
               printf("Errormessage: %s\n", mysqli_error($db));
 

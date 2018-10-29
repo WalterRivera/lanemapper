@@ -4,6 +4,8 @@ session_start();
 if(!isset($_SESSION['userid'])){
   header('Location: login.php');
 }
+require_once('classes/log.php');
+
 $id = $_SESSION['userid'];
 $email = $_SESSION['email'];
 $firstname = $_SESSION['fname'];
@@ -33,6 +35,23 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
 
 
   <script language="javascript" type="text/javascript">
+
+
+    function reportdownload(filename){
+      
+      ajaxRequest = new XMLHttpRequest();
+      ajaxRequest.onreadystatechange = function(){
+        if(ajaxRequest.readyState == 4){
+
+          var status = ajaxRequest.responseText;
+          //alert(status);
+        }
+      }
+
+      var queryString = "?download=" + filename;
+      ajaxRequest.open("GET", "reportdownload.php" + queryString, true);
+      ajaxRequest.send(null);
+    }
 
 
     function triggerLaneMapper(){
@@ -349,7 +368,6 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                   <th scope="col">File ID</th>
                   <th scope="col">Filename</th>
                   <th scope="col">Uploaded On</th>
-                  <th scope="col">Status</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -377,7 +395,6 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                           <th style="width: 10%" scope="row"><?php echo $id; ?></th>
                           <td style="width: 40%"><a href="#" onclick="filterdashboard('<?php echo $id;?>')" style="color:#f90; font-weight:bold;"><?php echo $filename; ?></a></td>
                           <td style="width: 25%"><?php echo date("F j, Y @ g:i A",$phpdate); ?></td>
-                          <td style="font-weight:bold;color:green;">Valid</td>
                           <td ><a href="#" style="color:#f90; font-weight:bold;" data-toggle="modal" data-target="#exampleModal" data-whatever="<?php echo $id ?>" >Request Report</a></td>
                         </tr>
                         <?php
@@ -467,7 +484,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                               <td style="width: 25%"><?php echo date("F j, Y @ g:i A",$phpdate);?></td>
                               <td style=" font-weight: bold;<?php if($status == 'Processing'){ echo 'color:red;';}else{ echo 'color:green;';} ?>"><?php echo $status; ?></td>
                               <?php if($status != 'Processing'){?>
-                              <td ><a href="<?php echo $pathtofile ?>" style="color:#f90;font-weight:bold;">Download Report</a></td>
+                              <td ><a href="<?php echo $pathtofile ?>" onclick="reportdownload('<?php echo $filename; ?>')" style="color:#f90;font-weight:bold;">Download Report</a></td>
                               <?php }?>
                             </tr>
                             <?php

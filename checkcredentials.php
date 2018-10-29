@@ -1,6 +1,5 @@
 <?php
-
-
+require_once('classes/log.php');
 $email = $_GET['email'];
 $password = $_GET['password'];
 $id = 0;
@@ -32,6 +31,23 @@ $db->close();
     $_SESSION['fname'] = $firstname;
     $_SESSION['lname'] = $lastname;
     $_SESSION['company'] = $company;
+
+    $log = new log();
+    $log->setCompany($company);
+    $log->setUserFname($firstname);
+    $log->setUserLname($lastname);
+    $log->setInformation('User login Successfully.');
+    $log->setType('LOGIN');
+    $log->save();
+  }else{
+    $log = new log();
+    $log->setCompany('');
+    $log->setUserFname('');
+    $log->setUserLname('');
+    $log->setInformation('User Failed Authentication Proccess. Email used = '.$email .' Password used = '.$password);
+    $log->setType('LOGIN-FAILED');
+    $log->save();
+
   }
 
   echo $id;

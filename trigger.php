@@ -1,4 +1,10 @@
 <?php
+session_start();
+
+if(!isset($_SESSION['userid'])){
+  header('Location: login.php');
+}
+
 $id = $_GET['id'];
 $report= $_GET['option'];
 $distances = $_GET['distances'];
@@ -171,11 +177,6 @@ if(mysqli_query($db, $query)){
 }
 $db->close();
 
-
-
-
-
-
 $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
@@ -191,6 +192,17 @@ mysqli_set_charset($db, "utf8");
             (NULL, '$id', '$company', '$reportPath', 'Processing', '$reportName' , '$requested_on')";
   if(mysqli_query($db,$query)){
     $uploaded = true;
+    include_once('classes/log.php');
+    $firstname = $_SESSION['fname'];
+    $lastname = $_SESSION['lname'];
+    $company = $_SESSION['company'];
+    $log = new log();
+    $log->setCompany($company);
+    $log->setUserFname($firstname);
+    $log->setUserLname($lastname);
+    $log->setInformation('User Request New Report. Report= '.$report .' From File= '.$filename);
+    $log->setType('REQUEST');
+    $log->save();
   }else{
     printf("Errormessage: %s\n", mysqli_error($db));
 

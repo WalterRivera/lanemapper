@@ -1,3 +1,26 @@
+Version 2.0.2.2 updated 10/29/2018
+Testing X64 compile on server
+----------------------------------------------------
+Version 2.0.2.1 updated 10/25/2018
+Updated calibration file for LM-2412
+--------------------------------------------
+Version 2.0.2.0 updated 10/22/2018
+put try catch around KillExcel
+---------------------------------------
+Version 2.0.1.9 updated 10/18/2018
+Made app a multiple instance app
+-------------------------------------
+Version 2.0.1.8 updated 10/18/2018
+Changed name of PDF files to Example: Year Month Day_LaneMapReport_NameOfXMLFile.PDF
+--------------------------------------------------------------
+Version 2.0.1.7 updated 10/15/2018
+Matched saving reports to uploads\CustomerFolder\Reports to web app
+--------------------------------------------------------
+Version 2.0.1.6 updated 10/15/2018
+Replaced Report Date parameter with Report Logo Path
+Removed Report Date from Report Settings Screen
+corrected parameters for Lane Map Comparison REport 22,23,24,25,26
+----------------------------------------------------
 Version 2.0.1.5 updated 10/12/2018
 added parameters to make selection of lanes for Lane Map Comparison report
 -----------------------------------------------------------

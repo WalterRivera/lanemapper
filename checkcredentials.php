@@ -19,6 +19,7 @@ $num_rows = mysqli_num_rows($result);
   if($num_rows > 0){
     $row = mysqli_fetch_assoc($result);
     $id = $row['id'];
+    $admin = $row['is_admin'];
     $email = $row['email'];
     $firstname = $row['first_name'];
     $lastname = $row['last_name'];
@@ -34,6 +35,7 @@ $db->close();
     $_SESSION['fname'] = $firstname;
     $_SESSION['lname'] = $lastname;
     $_SESSION['company'] = $company;
+    $_SESSION['admin'] = $admin;
 
     $log = new log();
     $log->setCompany($company);

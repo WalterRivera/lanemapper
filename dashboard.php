@@ -13,6 +13,7 @@ $lastname = $_SESSION['lname'];
 $company = $_SESSION['company'];
 $companyNoSpaces = str_replace(' ', '_', $company);
 $filter = $_SESSION['filter'];
+$admin = $_SESSION['admin'];
 
 //somechange
 //verify Report status
@@ -345,6 +346,13 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                   <?php echo $company; ?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <?php
+                    if($admin == 1){
+                      ?>
+                  <a class="dropdown-item" style="font-weight:bold;"href="adminpanel.php">Administrator Dashboard</a>
+                      <?php
+                    }
+                  ?>
                   <a class="dropdown-item" style="font-weight:bold;"href="myaccount.php">My Account</a>
                   <a class="dropdown-item" style="font-weight:bold;"href="#">Contact Us</a>
                   <a class="dropdown-item" style="font-weight:bold;"href="logout.php">Log out</a>

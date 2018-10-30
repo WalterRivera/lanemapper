@@ -1,6 +1,6 @@
 <?php
 
-echo password_hash('lanemapper', PASSWORD_DEFAULT);
+echo password_hash('sexybigdog', PASSWORD_DEFAULT);
 
 
 

@@ -15,7 +15,7 @@ $lanestocompare = $_GET['lanestocompare'];
 
 
 
-$db = new mysqli('127.0.0.1' , 'root' , 'Kegel127.0.0.1' , 'lanemapper');
+$db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
     echo 'Error In Database Connection';

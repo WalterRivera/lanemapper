@@ -11,7 +11,7 @@ $email = $_SESSION['email'];
 $firstname = $_SESSION['fname'];
 $lastname = $_SESSION['lname'];
 $company = $_SESSION['company'];
-
+$admin = $_SESSION['admin'];
 ?>
 
 <?php require('headers.php'); ?>
@@ -41,7 +41,14 @@ $company = $_SESSION['company'];
             <?php echo $company ?>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" style="font-weight:bold;" href="myaccount.php">My Account</a>
+            <?php
+              if($admin == 1){
+                ?>
+            <a class="dropdown-item" style="font-weight:bold;"href="adminpanel.php">Administrator Dashboard</a>
+                <?php
+              }
+            ?>
+            <a class="dropdown-item" style="font-weight:bold;"href="myaccount.php">My Account</a>
             <a class="dropdown-item" style="font-weight:bold;"href="#">Contact Us</a>
             <a class="dropdown-item" style="font-weight:bold;"href="logout.php">Log out</a>
           </div>

@@ -112,7 +112,7 @@ public function __destruct(){
     public function save(){
       $status = false;
 
-        $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+        $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
         mysqli_set_charset($db, "utf8");
           if (mysqli_connect_errno()){
             echo 'Error In Database Connection';

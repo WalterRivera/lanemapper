@@ -15,7 +15,7 @@ $log->setUserFname($firstname);
 $log->setUserLname($lastname);
 
 
-$db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+$db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
     echo 'Error In Database Connection';
@@ -33,7 +33,7 @@ $db->close();
 
 
 if(password_verify($oldpassword, $truepassword)){
-  $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+  $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
   mysqli_set_charset($db, "utf8");
     if (mysqli_connect_errno()){
       echo 'Error In Database Connection';

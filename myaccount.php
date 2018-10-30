@@ -51,6 +51,9 @@ $company = $_SESSION['company'];
         }else{
           $("#passok").text("Password Changed Succesfully.");
           $("#passok").show();
+          $("#beforepass").val("");
+          $("#newpass").val("");
+          $("#newpass2").val("");
         }
       }
     }

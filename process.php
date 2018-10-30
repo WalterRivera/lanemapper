@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
-          $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+          $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
           mysqli_set_charset($db, "utf8");
             if (mysqli_connect_errno()){
               echo 'Error In Database Connection';
@@ -156,7 +156,7 @@ function deleteOldFiles($filename , $company , $reportTitle){
     unlink($fileToDelete);
     $fileToDelete = 'uploads/'.$company.'/reports/'.$reportTitle."_CompareLaneMapReport.pdf";
 
-    $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+    $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
     mysqli_set_charset($db, "utf8");
       if (mysqli_connect_errno()){
         echo 'Error In Database Connection';

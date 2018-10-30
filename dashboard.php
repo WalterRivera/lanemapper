@@ -38,7 +38,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
 
 
     function reportdownload(filename){
-      
+
       ajaxRequest = new XMLHttpRequest();
       ajaxRequest.onreadystatechange = function(){
         if(ajaxRequest.readyState == 4){
@@ -240,7 +240,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
             <div id="beforefile" style="margin-top:20px;">
               <p style="font-weight:bold; color:#36454f;">Before File</P>
                 <?php
-                $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+                $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
                 mysqli_set_charset($db, "utf8");
                   if (mysqli_connect_errno()){
                     echo 'Error In Database Connection';
@@ -274,7 +274,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
             <div id="afterfile" style="margin-top:20px;">
               <p style="font-weight:bold; color:#36454f;">After File</P>
                 <?php
-                $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+                $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
                 mysqli_set_charset($db, "utf8");
                   if (mysqli_connect_errno()){
                     echo 'Error In Database Connection';
@@ -373,7 +373,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
               </thead>
               <tbody>
                 <?php
-                  $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+                  $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
                   mysqli_set_charset($db, "utf8");
                     if (mysqli_connect_errno()){
                       echo 'Error In Database Connection';
@@ -409,7 +409,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                 <?php
                   foreach(glob($reportpath.'/*.*') as $file) {
 
-                    $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+                    $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
                     mysqli_set_charset($db, "utf8");
                       if (mysqli_connect_errno()){
                         echo 'Error In Database Connection';
@@ -459,7 +459,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                         $query = "SELECT * FROM reports WHERE company='".$company."' AND file_id=".$filter." order by id desc";
                       }
 
-                      $db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+                      $db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
                       mysqli_set_charset($db, "utf8");
                         if (mysqli_connect_errno()){
                           echo 'Error In Database Connection';

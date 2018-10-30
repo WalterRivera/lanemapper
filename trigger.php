@@ -15,7 +15,7 @@ $lanestocompare = $_GET['lanestocompare'];
 
 
 
-$db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+$db = new mysqli('127.0.0.1' , 'root' , 'Kegel127.0.0.1' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
     echo 'Error In Database Connection';
@@ -161,7 +161,7 @@ else {
 
 
 unlink($reportPath);
-$db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+$db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
     echo 'Error In Database Connection';
@@ -177,7 +177,7 @@ if(mysqli_query($db, $query)){
 }
 $db->close();
 
-$db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+$db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
     echo 'Error In Database Connection';

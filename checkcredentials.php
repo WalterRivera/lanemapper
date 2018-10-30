@@ -6,7 +6,7 @@ $password = $_GET['password'];
 
 $id = 0;
 
-$db = new mysqli('localhost' , 'root' , '' , 'lanemapper');
+$db = new mysqli('127.0.0.1' , 'root' , 'KegelRoot' , 'lanemapper');
 mysqli_set_charset($db, "utf8");
   if (mysqli_connect_errno()){
     echo 'Error In Database Connection';
@@ -43,7 +43,7 @@ $db->close();
     $log->setType('LOGIN');
     $log->save();
   }else{
-    $id = 0; 
+    $id = 0;
     $log = new log();
     $log->setCompany('');
     $log->setUserFname('');

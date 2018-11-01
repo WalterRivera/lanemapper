@@ -30,7 +30,6 @@ if($admin != 1){
 
         var status = ajaxRequest.responseText;
         var data = $.parseJSON(status);
-
         $("#searchcompany").text(data.company);
         $("#searchaddress").text(data.address);
         $("#searchadded").text(data.addedon);
@@ -54,7 +53,7 @@ if($admin != 1){
     ajaxRequest.send(null);
   }
 
-  function removeaccount(){
+  function removeaccount(enable){
     var option = '';
     $( "select option:selected" ).each(function() {
       option = $( this ).text();
@@ -79,10 +78,11 @@ if($admin != 1){
           $("#removeaccountok").text("Account was disable Succesfully");
           $("#removeaccountok").show();
         }
+        
       }
     }
 
-    var queryString = "?name=" + option;
+    var queryString = "?name=" + option + "&enable=" + enable;
     ajaxRequest.open("GET", "removeaccount.php" + queryString, true);
     ajaxRequest.send(null);
 
@@ -327,7 +327,7 @@ if($admin != 1){
                   </div>
 
                   <div class="form-group">
-                      <button class="btn btn-primary btn-lg btn-block" onclick="removeaccount()" type="submit" style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; margin-top:10px;" >Remove Account</button>
+                      <button class="btn btn-primary btn-lg btn-block" onclick="removeaccount(0)" type="submit" style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; margin-top:10px;" >Remove Account</button>
                   </div>
 
                   <div class="form-group">
@@ -404,8 +404,8 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <a href="#" onclick="showform('addaccount')" style="color:#36454f; font-weight:bold;">Enable Account</a><br>
-                            <a href="#" onclick="showform('addaccount')" style="color:#36454f; font-weight:bold;">Disable Account</a>
+                            <a href="#" onclick="removeaccount(1)" style="color:#36454f; font-weight:bold;">Enable Account</a><br>
+                            <a href="#" onclick="removeaccount(0)" style="color:#36454f; font-weight:bold;">Disable Account</a>
                           </div>
 
                         </div>

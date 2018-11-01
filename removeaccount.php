@@ -12,6 +12,7 @@ $lastname = $_SESSION['lname'];
 $company = $_SESSION['company'];
 $admin = $_SESSION['admin'];
 $name = $_GET['name'];
+$enable = $_GET['enable'];
 
 $log = new log();
 $log->setCompany($company);
@@ -29,7 +30,7 @@ mysqli_set_charset($db, "utf8");
     exit;
   }
 $db->select_db('companies');
-$query = "UPDATE companies c INNER JOIN users u ON (c.company = u.company) SET c.access = 0,u.access = 0 WHERE c.company = '".$name."' and u.company ='".$name."'";
+$query = "UPDATE companies c INNER JOIN users u ON (c.company = u.company) SET c.access =".$enable." ,u.access =".$enable." WHERE c.company = '".$name."' and u.company ='".$name."'";
 if(mysqli_query($db,$query)){
   echo 'ok';
   $log->setInformation('Admin Disable Account. Account= '.$name);

@@ -44,16 +44,6 @@ $db->close();
     $log->setInformation('User login Successfully.');
     $log->setType('LOGIN');
     $log->save();
-  }else{
-    $id = 0;
-    $log = new log();
-    $log->setCompany('');
-    $log->setUserFname('');
-    $log->setUserLname('');
-    $log->setInformation('User Failed Authentication Proccess. Email used = '.$email .' Password used = '.$password);
-    $log->setType('LOGIN-FAILED');
-    $log->save();
-
   }
 
   echo $id;

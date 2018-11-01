@@ -16,7 +16,7 @@
         ajaxRequest = new XMLHttpRequest();
         ajaxRequest.onreadystatechange = function(){
           if(ajaxRequest.readyState == 4){
-
+            //alert(ajaxRequest.responseText);
             var id = ajaxRequest.responseText;
             if (id == 0 || id == "Error In Database Connection"){
               $("#loginError").show();

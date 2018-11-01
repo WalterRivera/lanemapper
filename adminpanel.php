@@ -23,6 +23,37 @@ if($admin != 1){
 
 <script language="javascript" type="text/javascript">
 
+  function showsearchresult(selection){
+    ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.onreadystatechange = function(){
+      if(ajaxRequest.readyState == 4){
+
+        var status = ajaxRequest.responseText;
+        var data = $.parseJSON(status);
+
+        $("#searchcompany").text(data.company);
+        $("#searchaddress").text(data.address);
+        $("#searchadded").text(data.addedon);
+        if(data.access == 1){
+          $("#searchaccess").text("Yes");
+        }else{
+          $("#searchaccess").text("No");
+        }
+
+        $("#searchusers").text(data.users);
+        $("#searchreports").text(data.reports);
+        $("#searchuploads").text(data.uploads);
+
+        $("#searchresult").show();
+
+      }
+    }
+
+    var queryString = "?selection=" + selection.value;
+    ajaxRequest.open("GET", "searchaccount.php" + queryString, true);
+    ajaxRequest.send(null);
+  }
+
   function removeaccount(){
     var option = '';
     $( "select option:selected" ).each(function() {
@@ -131,6 +162,8 @@ if($admin != 1){
 
 
 </script>
+
+
 
 <head>
   <link rel="stylesheet" href="css/logincss.css">
@@ -278,7 +311,7 @@ if($admin != 1){
                 </div>
 
                 <div id="removeaccount" style="display:none;">
-                  <p style="font-weight:bold;">Remove Account</p>
+                  <p style="font-weight:bold;">Disable Account</p>
 
                   <div class="form-group">
                     <label for="someinfo" style="float:left;font-weight:bold;">Choose Account</label>
@@ -289,7 +322,7 @@ if($admin != 1){
                   </div>
 
                   <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">* Removing account will disable access to all users from that company.</label>
+                    <label for="someinfo" style="float:left;font-weight:bold;">* Disabling account will disable access to all users from that company.</label>
 
                   </div>
 
@@ -303,22 +336,138 @@ if($admin != 1){
                   </div>
                 </div>
 
+                <div id="searchaccount" style="display:none;">
+                  <p style="font-weight:bold;">Search Account</p>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">Choose Account</label>
+                    <select class="custom-select" id="searchinput" onchange="showsearchresult(this)">
+                      <option selected>Choose...</option>
+                      <?php require('getallcompanies.php'); ?>
+                    </select>
 
 
+                    <div id="searchresult" class="card text-center" style="display:none;margin-top:20px; ">
+                      <div class="card-header" style="color:#36454f; background-color:#f90; font-weight:bold;">
+                        Account Details
+                      </div>
+                      <div class="card-body">
+
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Company</div>
+                              <div class="card-body">
+                                <h5 id="searchcompany" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
 
 
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Address</div>
+                              <div class="card-body">
+                                <h5 id="searchaddress" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Created On</div>
+                              <div class="card-body">
+                                <h5 id="searchadded" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
 
 
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-8">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Access</div>
+                              <div class="card-body">
+                                <h5 id="searchaccess" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <a href="#" onclick="showform('addaccount')" style="color:#36454f; font-weight:bold;">Enable Account</a><br>
+                            <a href="#" onclick="showform('addaccount')" style="color:#36454f; font-weight:bold;">Disable Account</a>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-8">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Users</div>
+                              <div class="card-body">
+                                <h5 id="searchusers" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Add User</a><br>
+                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Disable User</a>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-8">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Required Reports</div>
+                              <div class="card-body">
+                                <h5 id="searchreports" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Upload Report</a><br>
+                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">View Reports</a>
+                          </div>
+
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-8">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Uploaded Files</div>
+                              <div class="card-body">
+                                <h5 id="searchuploads" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Upload Files</a><br>
+                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">View Files</a>
+                          </div>
+
+                        </div>
 
 
+                      </div>
 
+                  </div>
 
-
-
-
-
-
-
+                  </div>
+                </div>
 
               </div>
             </div>

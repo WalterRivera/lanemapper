@@ -55,7 +55,7 @@ $FormatDateForReportTitle = substr($FormatDateForReportTitle, 0, strpos($FormatD
 
 $FormatDateForReportTitle = str_replace('-', '', $FormatDateForReportTitle);
 $FormatDateForReportTitle = strtotime($FormatDateForReportTitle);
-$FormatDateForReportTitle = date("Ynd",$FormatDateForReportTitle);
+$FormatDateForReportTitle = date("Ynj",$FormatDateForReportTitle);
 $fileNameNoExt = substr($filename, 0, strpos($filename, "."));
 $company = str_replace(' ', '_', $company);
 $reportPath = 'uploads/'. $company.'/reports/';

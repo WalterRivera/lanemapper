@@ -1,3 +1,8 @@
+Version 2.0.2.3 updated 10/31/2018
+Cleared data for USBC reports before running USBC Reports
+added auto selection of Report Type when selecting USBC Reports
+added selection count when selecting distances for USBC Report
+----------------------------------------------
 Version 2.0.2.2 updated 10/29/2018
 Testing X64 compile on server
 ----------------------------------------------------

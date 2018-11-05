@@ -23,6 +23,114 @@ if($admin != 1){
 
 <script language="javascript" type="text/javascript">
 
+  function showmode(){
+    input = jQuery('<button id="editbtn" class="btn btn-primary btn-lg btn-block" style="margin-top:35px;float:left;" onclick="editmode()"> <i class="fa fa-pencil"></i></button>');
+    jQuery('#editbuttonarea').append(input);
+    jQuery('#savebtn').remove();
+
+    var company = jQuery("#searcheditcompany").val();
+    $("#searchcompany").text(company);
+    jQuery('#searcheditcompany').remove();
+
+    var address = jQuery("#searcheditaddress").val();
+    $("#searchaddress").text(address);
+    jQuery('#searcheditaddress').remove();
+
+    var address2 = jQuery("#searcheditaddress2").val();
+    $("#searchaddress2").text(address2);
+    jQuery('#searcheditaddress2').remove();
+
+    var country = jQuery("#searcheditcountry").val();
+    $("#searchcountry").text(country);
+    jQuery('#searcheditcountry').remove();
+
+    var state = jQuery("#searcheditstate").val();
+    $("#searchstate").text(state);
+    jQuery('#searcheditstate').remove();
+
+    var city = jQuery("#searcheditcity").val();
+    $("#searchcity").text(city);
+    jQuery('#searcheditcity').remove();
+
+    var postal = jQuery("#searcheditpostal").val();
+    $("#searchpostal").text(postal);
+    jQuery('#searcheditpostal').remove();
+
+    var oldcompany = $("#searchinput").val();
+
+    if(company == '' || address == '' || country == '' || state == '' || city == '' || postal == '' ){
+
+      alert("Error, Information is missing");
+      return;
+    }
+
+    ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.onreadystatechange = function(){
+      if(ajaxRequest.readyState == 4){
+
+        var status = ajaxRequest.responseText;
+        //alert(status);
+        if(status != 'ok'){
+          alert('Error, Update could not be performed');
+        }else{
+
+        }
+      }
+    }
+
+    var queryString = "?company=" + company + "&address=" + address + "&address2=" + address2 +
+    "&country=" + country + "&state=" + state + "&city=" + city + "&postal=" + postal + "&id=" + oldcompany;
+    ajaxRequest.open("GET", "updateaccount.php" + queryString, true);
+    ajaxRequest.send(null);
+
+  }
+
+  function editmode(){
+    var company = $("#searchinput").val();
+    if(company == '' || company == 'Choose...'){
+      return;
+    }
+    input = jQuery('<button id="savebtn" class="btn btn-success btn-lg btn-block" style="margin-top:35px;float:left;" onclick="showmode()"> <i class="fa fa-check-circle"></i></button>');
+    jQuery('#editbuttonarea').append(input);
+    jQuery('#editbtn').remove();
+
+    var company = $("#searchcompany").text();
+    input = jQuery('<input type="text" class="form-control" id="searcheditcompany" aria-describedby="emailHelp" value="' + company + '" >');
+    $("#searchcompany").text("");
+    jQuery('#searchcompany').append(input);
+
+    var address = $("#searchaddress").text();
+    input = jQuery('<input type="text" class="form-control" id="searcheditaddress" aria-describedby="emailHelp" value="' + address + '" >');
+    $("#searchaddress").text("");
+    jQuery('#searchaddress').append(input);
+
+    var address2 = $("#searchaddress2").text();
+    input = jQuery('<input type="text" class="form-control" id="searcheditaddress2" aria-describedby="emailHelp" value="' + address2 + '" >');
+    $("#searchaddress2").text("");
+    jQuery('#searchaddress2').append(input);
+
+    var country = $("#searchcountry").text();
+    input = jQuery('<input type="text" class="form-control" id="searcheditcountry" aria-describedby="emailHelp" value="' + country + '" >');
+    $("#searchcountry").text("");
+    jQuery('#searchcountry').append(input);
+
+    var state = $("#searchstate").text();
+    input = jQuery('<input type="text" class="form-control" id="searcheditstate" aria-describedby="emailHelp" value="' + state + '" >');
+    $("#searchstate").text("");
+    jQuery('#searchstate').append(input);
+
+    var city = $("#searchcity").text();
+    input = jQuery('<input type="text" class="form-control" id="searcheditcity" aria-describedby="emailHelp" value="' + city + '" >');
+    $("#searchcity").text("");
+    jQuery('#searchcity').append(input);
+
+    var postal = $("#searchpostal").text();
+    input = jQuery('<input type="text" class="form-control" id="searcheditpostal" aria-describedby="emailHelp" value="' + postal + '" >');
+    $("#searchpostal").text("");
+    jQuery('#searchpostal').append(input);
+
+  }
+
   function showsearchresult(selection){
     ajaxRequest = new XMLHttpRequest();
     ajaxRequest.onreadystatechange = function(){
@@ -33,6 +141,11 @@ if($admin != 1){
         $("#searchcompany").text(data.company);
         $("#searchaddress").text(data.address);
         $("#searchadded").text(data.addedon);
+        $("#searchaddress2").text(data.address2);
+        $("#searchcountry").text(data.country);
+        $("#searchstate").text(data.state);
+        $("#searchcity").text(data.city);
+        $("#searchpostal").text(data.postal);
         if(data.access == 1){
           $("#searchaccess").text("Yes");
         }else{
@@ -72,13 +185,19 @@ if($admin != 1){
         var status = ajaxRequest.responseText;
         //alert(status);
         if(status != 'ok'){
-          $("#removeaccounterror").text("Could not disable account.");
-          $("#removeaccounterror").show();
+
+
         }else{
-          $("#removeaccountok").text("Account was disable Succesfully");
-          $("#removeaccountok").show();
+
+          if(enable == 0){
+            $("#searchaccess").text("No");
+          }else{
+            $("#searchaccess").text("Yes");
+          }
+
+
         }
-        
+
       }
     }
 
@@ -94,8 +213,14 @@ if($admin != 1){
     $("#addaccounterror").hide();
     var accountname = $("#addaccountname").val();
     var accountaddress = $("#addaccountaddress").val();
+    var accountaddress2 = $("#addaccountaddress2").val();
+    var country = $("#countryselect").val();
+    var state = $("#addaccountstate").val();
+    var city = $("#addaccountcity").val();
+    var postal = $("#addaccountpostal").val();
 
-    if(accountname == '' || accountaddress == ''){
+
+    if(accountname == '' || accountaddress == '' || country == 'Please Select a Country' || state == '' || city == '' || postal == ''){
       $("#addaccounterror").text("No empty fields are allowed.");
       $("#addaccounterror").show();
       return;
@@ -119,7 +244,8 @@ if($admin != 1){
       }
     }
 
-    var queryString = "?name=" + accountname + "&address=" + accountaddress;
+    var queryString = "?name=" + accountname + "&address=" + accountaddress + "&address2=" + accountaddress2 +
+    "&country=" + country + "&state=" + state + "&city=" + city + "&postal=" + postal;
     ajaxRequest.open("GET", "addnewaccount.php" + queryString, true);
     ajaxRequest.send(null);
 
@@ -231,22 +357,12 @@ if($admin != 1){
                   <div class="card" >
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item"><a href="#" onclick="showform('addaccount')" style="color:#36454f; font-weight:bold;">Add Account</a></li>
-                      <li class="list-group-item"><a href="#" onclick="showform('modifyaccount')" style="color:#36454f; font-weight:bold;">Modify Account</a></li>
-                      <li class="list-group-item"><a href="#" onclick="showform('removeaccount')" style="color:#36454f; font-weight:bold;">Disable Account</a></li>
+                    
+
                       <li class="list-group-item"><a href="#" onclick="showform('searchaccount')" style="color:#36454f; font-weight:bold;">Search Account</a></li>
                     </ul>
                   </div>
-                  <div class="card-header" style="color:#36454f; background-color:#f90; font-weight:bold">
-                    User Administration
-                  </div>
-                  <div class="card" >
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item"><a href="#" onclick="" style="color:#36454f; font-weight:bold;">Add User</a></li>
-                      <li class="list-group-item"><a href="#" onclick="" style="color:#36454f; font-weight:bold;">Modify User</a></li>
-                      <li class="list-group-item"><a href="#" onclick="" style="color:#36454f; font-weight:bold;">Remove User</a></li>
-                      <li class="list-group-item"><a href="#" onclick="" style="color:#36454f; font-weight:bold;">Search User</a></li>
-                    </ul>
-                  </div>
+
                 </div>
 
 
@@ -265,9 +381,38 @@ if($admin != 1){
                   </div>
 
                   <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">Address</label>
+                    <label for="someinfo" style="float:left;font-weight:bold;">Address Line 1</label>
                     <input type="text" class="form-control" id="addaccountaddress" aria-describedby="emailHelp" >
                   </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">Address Line 2</label>
+                    <input type="text" class="form-control" id="addaccountaddress2" aria-describedby="emailHelp" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">Country</label>
+                    <select class="custom-select" id="countryselect">
+                      <option selected>Please Select a Country</option>
+                      <?php require('getallcountries.php'); ?>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">State / Province / Region</label>
+                    <input type="text" class="form-control" id="addaccountstate" aria-describedby="emailHelp" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">City / Town</label>
+                    <input type="text" class="form-control" id="addaccountcity" aria-describedby="emailHelp" >
+                  </div>
+
+                  <div class="form-group">
+                    <label for="someinfo" style="float:left;font-weight:bold;">Zip / Postal Code</label>
+                    <input type="text" class="form-control" id="addaccountpostal" aria-describedby="emailHelp" >
+                  </div>
+
 
                   <div class="form-group">
                       <button class="btn btn-primary btn-lg btn-block" onclick="addnewaccount()" type="submit" style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; margin-top:10px;" >Add New Account</button>
@@ -340,11 +485,23 @@ if($admin != 1){
                   <p style="font-weight:bold;">Search Account</p>
 
                   <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">Choose Account</label>
-                    <select class="custom-select" id="searchinput" onchange="showsearchresult(this)">
-                      <option selected>Choose...</option>
-                      <?php require('getallcompanies.php'); ?>
-                    </select>
+
+
+                    <div class="row">
+
+                      <div class="col-md-8">
+                        <label for="someinfo" style="float:left;font-weight:bold;">Choose Account</label>
+                        <select class="custom-select" id="searchinput" onchange="showsearchresult(this)" >
+                          <option selected>Choose...</option>
+                          <?php require('getallcompanies.php'); ?>
+                        </select>
+                      </div>
+                      <div id="editbuttonarea" class="col-md-4">
+                        <button id="editbtn" class='btn btn-primary btn-lg btn-block ' style="margin-top:33px;float:left;" onclick="editmode()">
+                           <i class="fa fa-pencil"></i>
+                        </button>
+                      </div>
+                    </div>
 
 
                     <div id="searchresult" class="card text-center" style="display:none;margin-top:20px; ">
@@ -357,7 +514,9 @@ if($admin != 1){
 
                           <div class="col-md-12">
                             <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
-                              <div class="card-header">Company</div>
+                              <div class="card-header">Company
+
+                              </div>
                               <div class="card-body">
                                 <h5 id="searchcompany" class="card-title"></h5>
                               </div>
@@ -369,14 +528,63 @@ if($admin != 1){
 
                         <div class="row">
 
-                          <div class="col-md-12">
+                          <div class="col-md-6">
                             <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
-                              <div class="card-header">Address</div>
+                              <div class="card-header">Address Line 1</div>
                               <div class="card-body">
                                 <h5 id="searchaddress" class="card-title"></h5>
                               </div>
                             </div>
                           </div>
+
+                          <div class="col-md-6">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Address Line 2</div>
+                              <div class="card-body">
+                                <h5 id="searchaddress2" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-6">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Country</div>
+                              <div class="card-body">
+                                <h5 id="searchcountry" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">State / Region</div>
+                              <div class="card-body">
+                                <h5 id="searchstate" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">City</div>
+                              <div class="card-body">
+                                <h5 id="searchcity" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <div class="card bg-light mb-4" style="max-width: 100%;color:#36454f; font-weight:bold;">
+                              <div class="card-header">Postal Code</div>
+                              <div class="card-body">
+                                <h5 id="searchpostal" class="card-title"></h5>
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
 
                         <div class="row">
@@ -404,8 +612,13 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <a href="#" onclick="removeaccount(1)" style="color:#36454f; font-weight:bold;">Enable Account</a><br>
-                            <a href="#" onclick="removeaccount(0)" style="color:#36454f; font-weight:bold;">Disable Account</a>
+                            <button id="editbtn" class='btn btn-success  btn-block '  onclick="removeaccount(1)">
+                               <i class="fa fa-plus"></i> Enable Account
+                            </button>
+                            <button id="editbtn" class='btn btn-danger  btn-block '  onclick="removeaccount(0)">
+                               <i class="fa fa-minus"></i> Disable Account
+                            </button>
+
                           </div>
 
                         </div>
@@ -421,8 +634,12 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Add User</a><br>
-                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Disable User</a>
+                            <button id="adduser" class='btn btn-success  btn-block '  onclick="removeaccount(1)">
+                               <i class="fa fa-user-plus"></i> Add User
+                            </button>
+                            <button id="disableuser" class='btn btn-danger  btn-block '  onclick="removeaccount(0)">
+                               <i class="fa fa-user-times"></i> Disable User
+                            </button>
                           </div>
 
                         </div>
@@ -438,8 +655,12 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Upload Report</a><br>
-                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">View Reports</a>
+                            <button id="adduser" class='btn btn-primary  btn-block '  onclick="removeaccount(1)">
+                               <i class="fa fa-upload"></i> Upload Report
+                            </button>
+                            <button id="disableuser" class='btn btn-Primary  btn-block '  onclick="removeaccount(0)">
+                               <i class="fa fa-file-pdf-o"></i> View Reports
+                            </button>
                           </div>
 
                         </div>
@@ -455,8 +676,12 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">Upload Files</a><br>
-                            <a href="#" onclick="" style="color:#36454f; font-weight:bold;">View Files</a>
+                            <button id="adduser" class='btn btn-primary  btn-block '  onclick="removeaccount(1)">
+                               <i class="fa fa-upload"></i> Upload File
+                            </button>
+                            <button id="disableuser" class='btn btn-Primary  btn-block '  onclick="removeaccount(0)">
+                               <i class="fa fa-files-o"></i> View Files
+                            </button>
                           </div>
 
                         </div>

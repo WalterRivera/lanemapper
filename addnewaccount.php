@@ -13,6 +13,11 @@ $company = $_SESSION['company'];
 $admin = $_SESSION['admin'];
 $name = $_GET['name'];
 $address = $_GET['address'];
+$address2 = $_GET['address2'];
+$country = $_GET['country'];
+$state = $_GET['state'];
+$city = $_GET['city'];
+$postal = $_GET['postal'];
 
 if($admin != 1){
   header('Location: dashboard.php');
@@ -28,9 +33,9 @@ mysqli_set_charset($db, "utf8");
   $db->select_db('companies');
   $requested_on = date("Y-m-d H:i:s");
 
-  $query = "insert into companies (`id`, `company`, `address`, `added_on`)
+  $query = "insert into companies (`id`, `company`, `address` , `address_line_2` , `Country` , `state` , `city` , `postalcode`, `added_on`)
             values
-            (NULL, '$name', '$address', '$requested_on')";
+            (NULL, '$name', '$address'  , '$address2' , '$country' , '$state' , '$city' , '$postal' , '$requested_on')";
   if(mysqli_query($db,$query)){
     include_once('classes/log.php');
     $log = new log();

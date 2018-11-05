@@ -36,6 +36,11 @@ $num_rows = mysqli_num_rows($result);
     $row = mysqli_fetch_assoc($result);
     $showcompany = $row['company'];
     $showaddress = $row['address'];
+    $showaddress2 = $row['address_line_2'];
+    $showcountry = $row['Country'];
+    $showstate = $row['state'];
+    $showcity = $row['city'];
+    $showpostal = $row['postalcode'];
     $showadded = $row['added_on'];
     $showaccess = $row['access'];
     $showtreports = $row['Treports'];
@@ -49,7 +54,12 @@ $jsonAnswer = array('company' => $showcompany,
 'access' => $showaccess,
 'reports' => $showtreports,
 'uploads' => $showTuploads,
-'users' => $showTusers
+'users' => $showTusers,
+'address2' => $showaddress2,
+'country' => $showcountry,
+'state' => $showstate,
+'city' => $showcity,
+'postal' => $showpostal
 );
 echo json_encode($jsonAnswer);
 

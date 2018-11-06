@@ -23,6 +23,70 @@ if($admin != 1){
 
 <script language="javascript" type="text/javascript">
 
+  $(window).on('shown.bs.modal', function() {
+
+      var company = $("#searchinput").val();
+      $("#modaldisableuserbody").load("showusertodisable.php?company="+ company);
+  });
+
+  function adduser(){
+    $("#addusererror").hide();
+    $("#addusersuccess").hide();
+    var company = $("#searchinput").val();
+    var fname = $("#adduserfname").val();
+    var lname = $("#adduserlname").val();
+    var email = $("#adduseremail").val();
+    var password = $("#adduserpassword").val();
+    var password2 = $("#adduserpassword2").val();
+    var accountadmin = $("#adduseraccountadmin").is(":checked");
+    var lanemapperadmin = $("#addusermapperadmin").is(":checked");
+
+    if(company == '' || fname == '' || lname == '' || email == '' || password == '' || password2 == ''){
+      $("#addusererror").show();
+      $("#addusererrorinfo").text("All inputs must have information.");
+      return;
+    }
+
+    if(password != password2){
+      $("#addusererror").show();
+      $("#addusererrorinfo").text("Passwords does not match.");
+      return;
+    }
+
+    ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.onreadystatechange = function(){
+      if(ajaxRequest.readyState == 4){
+
+        var status = ajaxRequest.responseText;
+        //alert(status);
+        if(status != 'ok'){
+          $("#addusererror").show();
+          $("#addusererrorinfo").text("Cannot add user. Verify that email is not duplicated.");
+        }else{
+          $("#addusersuccess").show();
+          $("#addusersuccessinfo").text("User Added Succesfully.");
+          $("#searchinput").val("");
+          $("#adduserfname").val("");
+          $("#adduserlname").val("");
+          $("#adduseremail").val("");
+          $("#adduserpassword").val("");
+          $("#adduserpassword2").val("");
+          $("#adduseraccountadmin").prop('checked', false);
+          $("#addusermapperadmin").prop('checked', false);
+        }
+      }
+    }
+
+    var queryString = "?company=" + company + "&fname=" + fname + "&lname=" + lname + "&email=" + email
+    + "&password=" + password + "&mapperadmin=" + lanemapperadmin + "&accountadmin=" + accountadmin;
+    ajaxRequest.open("GET", "adduser.php" + queryString, true);
+    ajaxRequest.send(null);
+
+
+  }
+
+
+
   function showmode(){
     input = jQuery('<button id="editbtn" class="btn btn-primary btn-lg btn-block" style="margin-top:35px;float:left;" onclick="editmode()"> <i class="fa fa-pencil"></i></button>');
     jQuery('#editbuttonarea').append(input);
@@ -297,6 +361,97 @@ if($admin != 1){
 
 <head>
 <body>
+
+
+
+  <div class="modal fade" id="disableusermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" onload="adduserload()">
+    <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Disable Users</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="modaldisableuserbody" class="modal-body">
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fa fa-user-times"></i> Cancel</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal Add User to company -->
+  <div class="modal fade" id="addusermodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" onload="adduserload()">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group">
+            <label for="someinfo" style="float:left;font-weight:bold;">First Name</label>
+            <input type="text" class="form-control" id="adduserfname" aria-describedby="emailHelp" >
+          </div>
+
+          <div class="form-group">
+            <label for="someinfo" style="float:left;font-weight:bold;">Last Name</label>
+            <input type="text" class="form-control" id="adduserlname" aria-describedby="emailHelp" >
+          </div>
+
+          <div class="form-group">
+            <label for="someinfo" style="float:left;font-weight:bold;">Email</label>
+            <input type="text" class="form-control" id="adduseremail" aria-describedby="emailHelp" >
+          </div>
+
+          <div class="form-group">
+            <label for="someinfo" style="float:left;font-weight:bold;">Password</label>
+            <input type="password" class="form-control" id="adduserpassword" aria-describedby="emailHelp" >
+          </div>
+
+          <div class="form-group">
+            <label for="someinfo" style="float:left;font-weight:bold;">Confirm Password</label>
+            <input type="password" class="form-control" id="adduserpassword2" aria-describedby="emailHelp" >
+          </div>
+
+          <div class="form-group" id="addusererror" style="display:none;">
+            <label id="addusererrorinfo" for="someinfo" style="color:red;float:left;font-weight:bold;"></label><br>
+          </div>
+
+          <div class="form-group" id="addusersuccess" style="display:none;">
+            <label id="addusersuccessinfo" for="someinfo" style="color:green;float:left;font-weight:bold;"></label><br>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="adduseraccountadmin">
+            <label class="custom-control-label" for="adduseraccountadmin">Account Admin</label>
+          </div>
+
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="addusermapperadmin">
+            <label class="custom-control-label" for="addusermapperadmin">LaneMapper Admin</label>
+          </div>
+
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-user-times"></i> Cancel</button>
+          <button type="button" class="btn btn-success btn-block" onclick="adduser()"><i class="fa fa-user-plus"></i> Add Users</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="card text-center">
     <div class="card-header" style="background-color: #f90; font-weight:bold;">
           <img src="images/black.png" class="rounded" alt="LaneMapper" style="width:30px; height:auto;">
@@ -357,7 +512,7 @@ if($admin != 1){
                   <div class="card" >
                     <ul class="list-group list-group-flush">
                       <li class="list-group-item"><a href="#" onclick="showform('addaccount')" style="color:#36454f; font-weight:bold;">Add Account</a></li>
-                    
+
 
                       <li class="list-group-item"><a href="#" onclick="showform('searchaccount')" style="color:#36454f; font-weight:bold;">Search Account</a></li>
                     </ul>
@@ -634,11 +789,11 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <button id="adduser" class='btn btn-success  btn-block '  onclick="removeaccount(1)">
+                            <button id="adduser" class='btn btn-success  btn-block '  data-toggle="modal" data-target="#addusermodal">
                                <i class="fa fa-user-plus"></i> Add User
                             </button>
-                            <button id="disableuser" class='btn btn-danger  btn-block '  onclick="removeaccount(0)">
-                               <i class="fa fa-user-times"></i> Disable User
+                            <button id="disableuser" class='btn btn-danger  btn-block '  data-toggle="modal" data-target="#disableusermodal">
+                               <i class="fa fa-user"></i> Enable/Disable User
                             </button>
                           </div>
 
@@ -718,6 +873,8 @@ if($admin != 1){
     <br>
     <img src="images/black.png" class="rounded" alt="LaneMapper" style="width:90px; height:auto;">
   </div>
+</div>
+
 
 </body>
 

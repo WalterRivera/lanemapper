@@ -362,7 +362,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
 
             </ul>
           </nav>
-    
+
 
     <div class="card-body" style=" background-color:#36454f; color:white;">
       <div class="container">
@@ -388,7 +388,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                       echo 'Error In Database Connection';
                       exit;
                     }
-                  $db->select_db('users');
+                  $db->select_db('uploads');
                   $query = "SELECT id,filename,uploadedon FROM uploads WHERE company='".$companyNoSpaces."' order by id desc";
                   $result = mysqli_query($db,$query) or die(mysqli_error());
                   $num_rows = mysqli_num_rows($result);

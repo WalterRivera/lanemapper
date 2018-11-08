@@ -1,6 +1,6 @@
 
 
-<table  class="table table-sm ">
+<table  class="table table-striped ">
 
   <thead >
     <tr>
@@ -21,12 +21,12 @@
           exit;
         }
       $db->select_db('users');
-      $query = "SELECT email,first_name,last_name,access,is_admin,is_account_admin FROM users WHERE company=(SELECT company FROM companies WHERE id=".$company.") order by access DESC, first_name ASC";
+      $query = "SELECT id,email,first_name,last_name,access,is_admin,is_account_admin FROM users WHERE company=(SELECT company FROM companies WHERE id=".$company.") order by access DESC, first_name ASC";
       $result = mysqli_query($db,$query) or die(mysqli_error());
       $num_rows = mysqli_num_rows($result);
         if($num_rows > 0){
           while($row = mysqli_fetch_assoc($result)){
-
+            $userid = $row['id'];
             $fname = $row['first_name'];
             $lname = $row['last_name'];
             $email = $row['email'];
@@ -36,18 +36,18 @@
 
             ?>
             <tr>
-              <th style="width: 20%;font-weight:bold;" scope="row"><?php echo $fname; ?></th>
-              <td style="width: 20%;font-weight:bold;" scope="row"><?php echo $lname; ?></a></td>
+              <th style="width: 15%;font-weight:bold;" scope="row"><?php echo $fname; ?></th>
+              <td style="width: 15%;font-weight:bold;" scope="row"><?php echo $lname; ?></a></td>
               <td style="width: 20%;font-weight:bold;" scope="row"><?php echo $email; ?></td>
               <td style="width: 10%" scope="row"><?php echo $acess; ?></td>
               <?php
                 if($acess == 0){
                   ?>
-                  <td style="width: 30%" scope="row"><button type="button" class="btn btn-success btn-block" ><i class="fa fa-user-plus"></i> Enable</button></td>
+                  <td style="width: 30%" scope="row"><button type="button" class="btn btn-success btn-block" onclick="changeuseraccess(1,<?php echo $userid; ?>)" ><i class="fa fa-user-plus"></i> Enable</button></td>
                   <?php
                 }else{
                   ?>
-                  <td style="width: 30%" scope="row"><button type="button" class="btn btn-danger btn-block" ><i class="fa fa-user-times"></i> Disable</button></td>
+                  <td style="width: 30%" scope="row"><button type="button" class="btn btn-danger btn-block" onclick="changeuseraccess(0,<?php echo $userid; ?>)" ><i class="fa fa-user-times"></i> Disable</button></td>
                   <?php
                 }
               ?>

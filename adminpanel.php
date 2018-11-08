@@ -23,10 +23,82 @@ if($admin != 1){
 
 <script language="javascript" type="text/javascript">
 
+
+  function uploadreport(){
+    var company = $("#searchinput option:selected").text();
+    var fileid = $("#filesinput").val();
+
+    if(fileid == '' || fileid == 'Choose...'){
+      alert('Select a file to associate with the report.')
+      return;
+    }
+
+    var querystring = "?company=" + company + "&fileid=" + fileid;
+
+
+     const url = 'adminuploadreport.php' + querystring;
+
+     const files = document.querySelector('[type=file]').files;
+
+
+    var file = $("#pdffile").prop("files")[0];
+
+    var formData = new FormData();
+    formData.append("files[]", file);
+
+
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+      if (response.status === 422) {
+        $("#correct-format").hide();
+        $("#wrong-format").show();
+
+      }else{
+        $("#wrong-format").hide();
+        $("#correct-format").show();
+
+      }
+        //alert(response.status);
+
+    });
+  }
+
+
+  function changeuseraccess(access,userid){
+    ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.onreadystatechange = function(){
+      if(ajaxRequest.readyState == 4){
+
+        var status = ajaxRequest.responseText;
+        //alert(status);
+        if(status != 'ok'){
+
+        }else{
+          var company = $("#searchinput").val();
+          $("#modaldisableuserbody").load("showusertodisable.php?company="+ company);
+        }
+      }
+    }
+
+    var queryString = "?access=" + access + "&userid=" + userid ;
+    ajaxRequest.open("GET", "changeuseraccess.php" + queryString, true);
+    ajaxRequest.send(null);
+  }
+
   $(window).on('shown.bs.modal', function() {
 
       var company = $("#searchinput").val();
       $("#modaldisableuserbody").load("showusertodisable.php?company="+ company);
+
+      $("#modaluploadreportbody").load("getallfiles.php?company="+ company);
+
+      $("#modalviewreportsbody").load("showreports.php?company="+ company);
+
+      $("#modalviewfilebody").load("showfiles.php?company="+ company);
+
   });
 
   function adduser(){
@@ -321,8 +393,7 @@ if($admin != 1){
     $("#addaccounterror").hide();
 
 
-    $("#modifyaccount").hide();
-    $("#removeaccount").hide();
+
     $("#searchaccount").hide();
 
 
@@ -330,13 +401,6 @@ if($admin != 1){
       $("#addaccount").show();
     }
 
-    if(option == 'modifyaccount'){
-      $("#modifyaccount").show();
-    }
-
-    if(option == 'removeaccount'){
-      $("#removeaccount").show();
-    }
 
     if(option == 'searchaccount'){
       $("#searchaccount").show();
@@ -361,6 +425,91 @@ if($admin != 1){
 
 <head>
 <body>
+
+  <div class="modal fade" id="uploadreport" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" onload="adduserload()">
+    <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Disable Users</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div id="modaluploadreportbody" class="form-group">
+
+
+          </div>
+
+          <div class="form-group" >
+
+            <label for="someinfo" style="float:left; font-weight:bold; ">Upload PDF or Excel Reports</label>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="pdffile" name="pdffile" multiple required>
+              <label class="custom-file-label" for="validatedCustomFile" >Choose file...</label>
+
+              <div id="wrong-format" class="invalid-feedback" style="display:none; color:red; font-weight:bold;">
+                Only PDF or Excel Files Will be Accepted
+              </div>
+
+              <div id="correct-format" class="invalid-feedback" style="display:none; color:green; font-weight:bold;">
+                File uploaded
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger " data-dismiss="modal"><i class="fa fa-user-times"></i> Cancel</button>
+          <button type="button" class="btn btn-success btn-block " onclick="uploadreport()" ><i class="fa fa-file-pdf-o"></i> Upload Files</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="viewfilesmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" onload="adduserload()">
+    <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">View uploaded Files</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="modalviewfilebody" class="modal-body">
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fa fa-user-times"></i> Cancel</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="viewreportsmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" onload="adduserload()">
+    <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">View Reports</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="modalviewreportsbody" class="modal-body">
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fa fa-user-times"></i> Cancel</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -439,9 +588,6 @@ if($admin != 1){
             <input type="checkbox" class="custom-control-input" id="addusermapperadmin">
             <label class="custom-control-label" for="addusermapperadmin">LaneMapper Admin</label>
           </div>
-
-
-
 
         </div>
         <div class="modal-footer">
@@ -579,63 +725,6 @@ if($admin != 1){
                   </div>
                 </div>
 
-                <div id="modifyaccount" style="display:none;">
-                  <p style="font-weight:bold;">Modify Account</p>
-
-                  <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">Choose Account</label>
-                    <select class="custom-select" id="inputGroupSelect01">
-                      <option selected>Choose...</option>
-                      <?php require('getallcompanies.php'); ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">Account Name</label>
-                    <input type="text" class="form-control" id="beforepass" aria-describedby="emailHelp" >
-                  </div>
-
-                  <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">Address</label>
-                    <input type="text" class="form-control" id="beforepass" aria-describedby="emailHelp" >
-                  </div>
-
-                  <div class="form-group">
-                      <button class="btn btn-primary btn-lg btn-block" onclick="" type="submit" style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; margin-top:10px;" >Modify Account</button>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="someinfo" id="modifyaccounterror" style="float:left;font-weight:bold; color:red; display:none;"></label>
-                    <label for="someinfo" id="modifyaccountok" style="float:left;font-weight:bold; color:green; display:none;"></label>
-                  </div>
-                </div>
-
-                <div id="removeaccount" style="display:none;">
-                  <p style="font-weight:bold;">Disable Account</p>
-
-                  <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">Choose Account</label>
-                    <select class="custom-select" id="inputGroupSelect01">
-                      <option selected>Choose...</option>
-                      <?php require('getallcompanies.php'); ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="someinfo" style="float:left;font-weight:bold;">* Disabling account will disable access to all users from that company.</label>
-
-                  </div>
-
-                  <div class="form-group">
-                      <button class="btn btn-primary btn-lg btn-block" onclick="removeaccount(0)" type="submit" style="font-weight:bold; background-color: #f90; border-color: #f90; color:black; margin-top:10px;" >Remove Account</button>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="someinfo" id="removeaccounterror" style="float:left;font-weight:bold; color:red; display:none;"></label>
-                    <label for="someinfo" id="removeaccountok" style="float:left;font-weight:bold; color:green; display:none;"></label>
-                  </div>
-                </div>
-
                 <div id="searchaccount" style="display:none;">
                   <p style="font-weight:bold;">Search Account</p>
 
@@ -767,10 +856,10 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <button id="editbtn" class='btn btn-success  btn-block '  onclick="removeaccount(1)">
+                            <button id="editbtn" class='btn btn-dark  btn-block '  onclick="removeaccount(1)">
                                <i class="fa fa-plus"></i> Enable Account
                             </button>
-                            <button id="editbtn" class='btn btn-danger  btn-block '  onclick="removeaccount(0)">
+                            <button id="editbtn" class='btn btn-dark  btn-block '  onclick="removeaccount(0)">
                                <i class="fa fa-minus"></i> Disable Account
                             </button>
 
@@ -789,10 +878,10 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <button id="adduser" class='btn btn-success  btn-block '  data-toggle="modal" data-target="#addusermodal">
+                            <button id="adduser" class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#addusermodal">
                                <i class="fa fa-user-plus"></i> Add User
                             </button>
-                            <button id="disableuser" class='btn btn-danger  btn-block '  data-toggle="modal" data-target="#disableusermodal">
+                            <button id="disableuser" class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#disableusermodal">
                                <i class="fa fa-user"></i> Enable/Disable User
                             </button>
                           </div>
@@ -810,10 +899,10 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <button id="adduser" class='btn btn-primary  btn-block '  onclick="removeaccount(1)">
+                            <button id="adduser" class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#uploadreport">
                                <i class="fa fa-upload"></i> Upload Report
                             </button>
-                            <button id="disableuser" class='btn btn-Primary  btn-block '  onclick="removeaccount(0)">
+                            <button id="disableuser" class='btn btn-dark  btn-block ' data-toggle="modal" data-target="#viewreportsmodal">
                                <i class="fa fa-file-pdf-o"></i> View Reports
                             </button>
                           </div>
@@ -831,10 +920,7 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <button id="adduser" class='btn btn-primary  btn-block '  onclick="removeaccount(1)">
-                               <i class="fa fa-upload"></i> Upload File
-                            </button>
-                            <button id="disableuser" class='btn btn-Primary  btn-block '  onclick="removeaccount(0)">
+                            <button id="disableuser" class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#viewfilesmodal">
                                <i class="fa fa-files-o"></i> View Files
                             </button>
                           </div>
@@ -875,7 +961,17 @@ if($admin != 1){
   </div>
 </div>
 
-
 </body>
 
-</html>
+<script>
+
+  $('#pdffile').on('change',function(){
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      $(this).next('.custom-file-label').html(fileName);
+  })
+
+
+
+</script>

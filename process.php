@@ -127,7 +127,7 @@ if ($uploaded != true){
 function deleteOldFiles($filename , $company , $reportTitle){
 
   if (file_exists("uploads/Kegel_LLC/files/".$filename)) {
-    $xml=simplexml_load_file("uploads/Kegel_LLC/files/".$filename) or die("Error: Cannot create object");
+    $xml=simplexml_load_file("uploads/".$company."/files/".$filename) or die("Error: Cannot create object");
     $FormatDateForReportTitle = $xml->children()->Mappers[0]->Date;
     $FormatDateForReportTitle = substr($FormatDateForReportTitle, 0, strpos($FormatDateForReportTitle, "T"));
     $FormatDateForReportTitle = str_replace('-', '', $FormatDateForReportTitle);

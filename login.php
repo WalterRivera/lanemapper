@@ -18,7 +18,7 @@
           if(ajaxRequest.readyState == 4){
             //alert(ajaxRequest.responseText);
             var id = ajaxRequest.responseText;
-            if (id == 0 || id == "Error In Database Connection"){
+            if (id != 'ok'){
               $("#loginError").show();
             }else{
               $("#loginError").hide();

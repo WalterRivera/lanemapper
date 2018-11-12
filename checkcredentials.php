@@ -25,10 +25,11 @@ $num_rows = mysqli_num_rows($result);
     $lastname = $row['last_name'];
     $company = $row['company'];
     $truepassword =$row['password'];
+    $resetstatus = $row['require_new_password'];
   }
 $db->close();
 
-  if($id > 0 && $id != "Error In Database Connection" && password_verify($password, $truepassword) == true){
+  if($id > 0 && password_verify($password, $truepassword) == true){
     session_start();
     $_SESSION['userid'] = $id;
     $_SESSION['email'] = $email;
@@ -36,6 +37,7 @@ $db->close();
     $_SESSION['lname'] = $lastname;
     $_SESSION['company'] = $company;
     $_SESSION['admin'] = $admin;
+    $_SESSION['resetpassword'] = $resetstatus;
 
     $log = new log();
     $log->setCompany($company);
@@ -44,8 +46,9 @@ $db->close();
     $log->setInformation('User login Successfully.');
     $log->setType('LOGIN');
     $log->save();
+    echo 'ok';
   }
 
-  echo $id;
+
 
 ?>

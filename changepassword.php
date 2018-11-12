@@ -41,13 +41,14 @@ if(password_verify($oldpassword, $truepassword)){
     }
   $db->select_db('users');
   $newpassword = password_hash($newpassword, PASSWORD_DEFAULT);
-  $query = "UPDATE users SET password='".$newpassword."' WHERE email='". $email ."'";
+  $query = "UPDATE users SET password='".$newpassword."',require_new_password=0  WHERE email='". $email ."'";
   if(mysqli_query($db,$query)){
     if(mysqli_affected_rows($db)>0){
       echo 'ok';
       $log->setInformation('User Change Password Succesfully.');
       $log->setType('PASSWORD-CHANGE-SUCCESFULLY');
       $log->save();
+      $_SESSION['resetpassword'] = 0;
     }else{
       echo 'e';
       $log->setInformation('User Try to Change Password Unsuccesfully.');

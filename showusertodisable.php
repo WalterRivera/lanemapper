@@ -7,8 +7,8 @@
       <th scope="col">First Name</th>
       <th scope="col">Last Name</th>
       <th scope="col">Email</th>
-      <th scope="col">Access</th>
       <th scope="col">Enable/Disable</th>
+      <th scope="col">Reset Password</th>
     </tr>
   </thead>
   <tbody>
@@ -39,18 +39,21 @@
               <th style="width: 15%;font-weight:bold;" scope="row"><?php echo $fname; ?></th>
               <td style="width: 15%;font-weight:bold;" scope="row"><?php echo $lname; ?></a></td>
               <td style="width: 20%;font-weight:bold;" scope="row"><?php echo $email; ?></td>
-              <td style="width: 10%" scope="row"><?php echo $acess; ?></td>
               <?php
                 if($acess == 0){
                   ?>
-                  <td style="width: 30%" scope="row"><button type="button" class="btn btn-success btn-block" onclick="changeuseraccess(1,<?php echo $userid; ?>)" ><i class="fa fa-user-plus"></i> Enable</button></td>
+                  <td style="width: 20%" scope="row"><button type="button" class="btn btn-danger btn-block" onclick="changeuseraccess(1,<?php echo $userid; ?>)" > Disabled</button></td>
                   <?php
                 }else{
                   ?>
-                  <td style="width: 30%" scope="row"><button type="button" class="btn btn-danger btn-block" onclick="changeuseraccess(0,<?php echo $userid; ?>)" ><i class="fa fa-user-times"></i> Disable</button></td>
+                  <td style="width: 20%" scope="row"><button type="button" class="btn btn-success btn-block" onclick="changeuseraccess(0,<?php echo $userid; ?>)" > Enabled</button></td>
+                  <td style="width: 20%;font-weight:bold;" scope="row"><button type="button" class="btn btn-info btn-block" onclick="resetpassword(<?php echo $userid; ?>,'<?php echo $email; ?>')" > Reset Password</button></td>
                   <?php
                 }
+
+
               ?>
+
             </tr>
             <?php
           }

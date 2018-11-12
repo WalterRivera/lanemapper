@@ -17,11 +17,72 @@ if($admin != 1){
   header('Location: dashboard.php');
 }
 
+if($_SESSION['resetpassword'] == 1){
+  header('Location: myaccount.php');
+}
+
 ?>
 
 <?php require('headers.php'); ?>
 
 <script language="javascript" type="text/javascript">
+
+  function resetpassword(userid,email){
+
+    $("#disableusersuccess").hide();
+    $("#disableusersuccess").hide();
+
+
+    ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.onreadystatechange = function(){
+      if(ajaxRequest.readyState == 4){
+
+        var status = ajaxRequest.responseText;
+        //alert(status);
+        if(status != 'ok'){
+          $("#disableusersuccess").show();
+          $("#disableusersuccessinfo").text("Could Not reset password.");
+        }else{
+          $("#disableusersuccess").show();
+          $("#disableusersuccessinfo").text("Password was reset and email has been sent Succesfully.");
+        }
+      }
+    }
+
+    var queryString = "?userid=" + userid + "&email=" + email ;
+    ajaxRequest.open("GET", "resetpassword.php" + queryString, true);
+    ajaxRequest.send(null);
+
+
+
+
+  }
+
+
+  function saveadmins(userid){
+    var account = $("#manageadminaccount" + userid).is(":checked");
+    var mapper = $("#manageadminmapper" + userid).is(":checked");
+
+    ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.onreadystatechange = function(){
+      if(ajaxRequest.readyState == 4){
+
+        var status = ajaxRequest.responseText;
+        //alert(status);
+        if(status != 'ok'){
+          alert('Error Updating admin');
+        }else{
+          var company = $("#searchinput").val();
+          $("#modaldisableuserbody").load("manageadmins.php?company="+ company);
+        }
+      }
+    }
+
+    var queryString = "?userid=" + userid + "&account=" + account + "&mapper=" + mapper ;
+    ajaxRequest.open("GET", "saveadmins.php" + queryString, true);
+    ajaxRequest.send(null);
+
+  }
 
 
   function uploadreport(){
@@ -68,6 +129,9 @@ if($admin != 1){
 
 
   function changeuseraccess(access,userid){
+    $("#disableusersuccess").hide();
+    $("#disableusersuccess").hide();
+
     ajaxRequest = new XMLHttpRequest();
     ajaxRequest.onreadystatechange = function(){
       if(ajaxRequest.readyState == 4){
@@ -75,10 +139,13 @@ if($admin != 1){
         var status = ajaxRequest.responseText;
         //alert(status);
         if(status != 'ok'){
-
+          $("#disableusererrorinfo").show();
+          $("#disableusererrorinfo").text("User could not be disabled.");
         }else{
           var company = $("#searchinput").val();
           $("#modaldisableuserbody").load("showusertodisable.php?company="+ company);
+          $("#disableusersuccessinfo").show();
+          $("#disableusersuccessinfo").text("User disabled succesfully.");
         }
       }
     }
@@ -98,6 +165,8 @@ if($admin != 1){
       $("#modalviewreportsbody").load("showreports.php?company="+ company);
 
       $("#modalviewfilebody").load("showfiles.php?company="+ company);
+
+      $("#modalmaanageadminbody").load("manageadmins.php?company="+ company);
 
   });
 
@@ -137,7 +206,6 @@ if($admin != 1){
         }else{
           $("#addusersuccess").show();
           $("#addusersuccessinfo").text("User Added Succesfully.");
-          $("#searchinput").val("");
           $("#adduserfname").val("");
           $("#adduserlname").val("");
           $("#adduseremail").val("");
@@ -288,11 +356,19 @@ if($admin != 1){
           $("#searchaccess").text("No");
         }
 
+
+
+
         $("#searchusers").text(data.users);
         $("#searchreports").text(data.reports);
         $("#searchuploads").text(data.uploads);
 
         $("#searchresult").show();
+        if(data.company == 'Kegel LLC'){
+          $("#searchenabledisablesection").hide();
+        }else{
+          $("#searchenabledisablesection").show();
+        }
 
       }
     }
@@ -469,6 +545,27 @@ if($admin != 1){
     </div>
   </div>
 
+  <div class="modal fade" id="manageadminmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" onload="adduserload()">
+    <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Manage Administrators</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="modalmaanageadminbody" class="modal-body">
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fa fa-user-times"></i> Cancel</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="viewfilesmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" onload="adduserload()">
     <div class="modal-dialog modal-lg modal-dialog-centered " role="document">
       <div class="modal-content">
@@ -526,6 +623,14 @@ if($admin != 1){
 
 
         </div>
+        <div class="form-group" id="disableusererror" style="display:none;">
+          <label id="disableusererrorinfo" for="someinfo" style="color:red;float:left;font-weight:bold;"></label><br>
+        </div>
+
+        <div class="form-group" id="disableusersuccess" style="display:none;">
+          <label id="disableusersuccessinfo" for="someinfo" style="color:green;float:left;font-weight:bold;"></label><br>
+        </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><i class="fa fa-user-times"></i> Cancel</button>
 
@@ -584,10 +689,11 @@ if($admin != 1){
             <label class="custom-control-label" for="adduseraccountadmin">Account Admin</label>
           </div>
 
-          <div class="custom-control custom-checkbox">
+          <div id="adduserlanemapperoption" class="custom-control custom-checkbox" style="display:none;">
             <input type="checkbox" class="custom-control-input" id="addusermapperadmin">
             <label class="custom-control-label" for="addusermapperadmin">LaneMapper Admin</label>
           </div>
+
 
         </div>
         <div class="modal-footer">
@@ -855,15 +961,17 @@ if($admin != 1){
                               </div>
                             </div>
                           </div>
-                          <div class="col-md-4">
-                            <button id="editbtn" class='btn btn-dark  btn-block '  onclick="removeaccount(1)">
+
+                          <div id="searchenabledisablesection" class="col-md-4">
+                            <button  class='btn btn-dark  btn-block '  onclick="removeaccount(1)">
                                <i class="fa fa-plus"></i> Enable Account
                             </button>
-                            <button id="editbtn" class='btn btn-dark  btn-block '  onclick="removeaccount(0)">
+                            <button  class='btn btn-dark  btn-block '  onclick="removeaccount(0)">
                                <i class="fa fa-minus"></i> Disable Account
                             </button>
 
                           </div>
+
 
                         </div>
 
@@ -882,8 +990,19 @@ if($admin != 1){
                                <i class="fa fa-user-plus"></i> Add User
                             </button>
                             <button id="disableuser" class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#disableusermodal">
-                               <i class="fa fa-user"></i> Enable/Disable User
+                               <i class="fa fa-user"></i> Manage User
                             </button>
+
+
+                            <?php
+                              if($company == 'Kegel LLC'){
+                                ?>
+                                <button  class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#manageadminmodal">
+                                   <i class="fa fa-lock"></i> Manage Admins
+                                </button><br>
+                                <?php
+                              }
+                            ?>
                           </div>
 
                         </div>
@@ -899,10 +1018,10 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <button id="adduser" class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#uploadreport">
+                            <button class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#uploadreport">
                                <i class="fa fa-upload"></i> Upload Report
                             </button>
-                            <button id="disableuser" class='btn btn-dark  btn-block ' data-toggle="modal" data-target="#viewreportsmodal">
+                            <button  class='btn btn-dark  btn-block ' data-toggle="modal" data-target="#viewreportsmodal">
                                <i class="fa fa-file-pdf-o"></i> View Reports
                             </button>
                           </div>
@@ -920,7 +1039,7 @@ if($admin != 1){
                             </div>
                           </div>
                           <div class="col-md-4">
-                            <button id="disableuser" class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#viewfilesmodal">
+                            <button  class='btn btn-dark  btn-block '  data-toggle="modal" data-target="#viewfilesmodal">
                                <i class="fa fa-files-o"></i> View Files
                             </button>
                           </div>

@@ -4,6 +4,11 @@ session_start();
 if(!isset($_SESSION['userid'])){
   header('Location: login.php');
 }
+
+if($_SESSION['resetpassword'] == 1){
+  header('Location: myaccount.php');
+}
+
 require_once('classes/log.php');
 
 $id = $_SESSION['userid'];

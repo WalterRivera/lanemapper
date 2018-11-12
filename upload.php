@@ -6,6 +6,10 @@ if(!isset($_SESSION['userid'])){
   header('Location: login.php');
 }
 
+if($_SESSION['resetpassword'] == 1){
+  header('Location: myaccount.php');
+}
+
 $id = $_SESSION['userid'];
 $email = $_SESSION['email'];
 $firstname = $_SESSION['fname'];

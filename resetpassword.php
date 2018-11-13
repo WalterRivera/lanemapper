@@ -17,7 +17,7 @@ $company = $_SESSION['company'];
 $admin = $_SESSION['admin'];
 $userid = $_GET['userid'];
 $useremail = $_GET['email'];
-$newpassword = generateRandomString(40);
+$newpassword = generateRandomString(20);
 $newpasswordencrypted = password_hash($newpassword, PASSWORD_DEFAULT);
 $log = new log();
 $log->setCompany($company);
@@ -52,7 +52,7 @@ $db->close();
 
 
 function generateRandomString($length) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*';
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
     $randomString = '';
     for ($i = 0; $i < $length; $i++) {

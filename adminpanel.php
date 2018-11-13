@@ -28,10 +28,8 @@ if($_SESSION['resetpassword'] == 1){
 <script language="javascript" type="text/javascript">
 
   function resetpassword(userid,email){
-
     $("#disableusersuccess").hide();
     $("#disableusersuccess").hide();
-
 
     ajaxRequest = new XMLHttpRequest();
     ajaxRequest.onreadystatechange = function(){

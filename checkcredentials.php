@@ -18,14 +18,18 @@ $result = mysqli_query($db,$query) or die(mysqli_error());
 $num_rows = mysqli_num_rows($result);
   if($num_rows > 0){
     $row = mysqli_fetch_assoc($result);
+
     $id = $row['id'];
     $admin = $row['is_admin'];
+    $accountadmin = $row['is_account_admin'];
     $email = $row['email'];
     $firstname = $row['first_name'];
     $lastname = $row['last_name'];
     $company = $row['company'];
     $truepassword =$row['password'];
     $resetstatus = $row['require_new_password'];
+  }else {
+    printf("Errormessage: %s\n", mysqli_error($db));
   }
 $db->close();
 
@@ -38,7 +42,7 @@ $db->close();
     $_SESSION['company'] = $company;
     $_SESSION['admin'] = $admin;
     $_SESSION['resetpassword'] = $resetstatus;
-
+    $_SESSION['accountadmin'] = $accountadmin;
     $log = new log();
     $log->setCompany($company);
     $log->setUserFname($firstname);
@@ -47,6 +51,8 @@ $db->close();
     $log->setType('LOGIN');
     $log->save();
     echo 'ok';
+  }else{
+    echo 'not ok';
   }
 
 

@@ -22,6 +22,7 @@ function sendpasswordreset($email,$newpassword){
   $from="walter.rivera@kegel.net";
   $from_name="Kegel LaneMapper Team";
   $msg="
+
   Your account password has been reset.<br>
   Please use the following partial password to access lanemapper.<br><br>
   Password: ".$newpassword."<br><br><br>

@@ -111,6 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               $log->save();
 
             }else{
+              $log->setInformation('Error, User Cant Upload to db. File= '.$fileNameToSave . "ERROR= ".mysqli_error($db));
+              $log->setType('ERROR');
+              $log->save();
               printf("Errormessage: %s\n", mysqli_error($db));
 
             }
@@ -126,7 +129,7 @@ if ($uploaded != true){
 
 function deleteOldFiles($filename , $company , $reportTitle){
 
-  if (file_exists("uploads/Kegel_LLC/files/".$filename)) {
+  if (file_exists("uploads/".$company."/files/".$filename)) {
     $xml=simplexml_load_file("uploads/".$company."/files/".$filename) or die("Error: Cannot create object");
     $FormatDateForReportTitle = $xml->children()->Mappers[0]->Date;
     $FormatDateForReportTitle = substr($FormatDateForReportTitle, 0, strpos($FormatDateForReportTitle, "T"));
@@ -168,6 +171,9 @@ function deleteOldFiles($filename , $company , $reportTitle){
     if(mysqli_query($db, $query)){
 
     }else{
+      $log->setInformation('Error, User Cant DELETE DUPLICATES FROM db. File= '.$fileNameToSave . "ERROR= ".mysqli_error($db));
+      $log->setType('ERROR');
+      $log->save();
       printf("Errormessage: %s\n", mysqli_error($db));
     }
     $db->close();

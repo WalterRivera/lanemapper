@@ -337,7 +337,6 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
           <img src="images/black.png" class="rounded" alt="LaneMapper" style="width:30px; height:auto;">
           <br>
           KEGEL | Lane Mapper
-    </div>
 
           <nav class="navbar justify-content-center" style="background-color:#f90; ">
 
@@ -354,7 +353,7 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                  
+
 
                   <?php
                     if($admin == 1){
@@ -371,6 +370,9 @@ $reportpath = 'uploads/'.$companyNoSpaces.'/reports';
 
             </ul>
           </nav>
+    </div>
+
+
 
 
     <div class="card-body" style=" background-color:#36454f; color:white;">

@@ -30,35 +30,36 @@ $admin = $_SESSION['admin'];
           <img src="images/black.png" class="rounded" alt="LaneMapper" style="width:30px; height:auto;">
           <br>
           KEGEL | Lane Mapper
+          <nav class="navbar justify-content-center" style="background-color:#f90;">
+            <ul class="nav nav-pills" style="color:black;">
+              <li class="nav-item" >
+                <a class="nav-link" href="dashboard.php" style="font-weight:bold; color:#36454f">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" style="color:#f90; background-color:#36454f; font-weight:bold" href="upload.php" style="font-weight:bold; color:#36454f">Upload New</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="font-weight:bold; color:#36454f" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <?php echo $company ?>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <?php
+                    if($admin == 1){
+                      ?>
+                  <a class="dropdown-item" style="font-weight:bold;"href="adminpanel.php">Administrator Dashboard</a>
+                      <?php
+                    }
+                  ?>
+                  <a class="dropdown-item" style="font-weight:bold;"href="myaccount.php">My Account</a>
+                  <a class="dropdown-item" style="font-weight:bold;"href="#">Contact Us</a>
+                  <a class="dropdown-item" style="font-weight:bold;"href="logout.php">Log out</a>
+                </div>
+              </li>
+            </ul>
+          </nav>
     </div>
 
-    <nav class="navbar justify-content-center" style="background-color:#f90;">
-      <ul class="nav nav-pills" style="color:black;">
-        <li class="nav-item" >
-          <a class="nav-link" href="dashboard.php" style="font-weight:bold; color:#36454f">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" style="color:#f90; background-color:#36454f; font-weight:bold" href="upload.php" style="font-weight:bold; color:#36454f">Upload New</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" style="font-weight:bold; color:#36454f" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <?php echo $company ?>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <?php
-              if($admin == 1){
-                ?>
-            <a class="dropdown-item" style="font-weight:bold;"href="adminpanel.php">Administrator Dashboard</a>
-                <?php
-              }
-            ?>
-            <a class="dropdown-item" style="font-weight:bold;"href="myaccount.php">My Account</a>
-            <a class="dropdown-item" style="font-weight:bold;"href="#">Contact Us</a>
-            <a class="dropdown-item" style="font-weight:bold;"href="logout.php">Log out</a>
-          </div>
-        </li>
-      </ul>
-    </nav>
+
 
 
     <div class="card-body" style="background-color:#36454f; color:white;">
@@ -305,6 +306,21 @@ function upload(){
   var pinDecks = document.getElementById('pinDecks').value;
   var pinsetters = document.getElementById('pinsetters').value;
   var scoreSystem = document.getElementById('scoreSystem').value;
+
+  if(isNaN(laneSurfaceYearInstallation) == true ){
+    alert("Surface year installation must be a numeric value.");
+    return;
+  }
+
+  if(isNaN(NumberLanes) == true ){
+    alert("Number of lanes must be a numeric value.");
+    return;
+  }
+
+  if(isNaN(Underlaymentyear) == true ){
+    alert("Underlayment Year must be a numeric value.");
+    return;
+  }
 
 
   var querystring = "?rt=" + reportTitle + "&rl=" + reportLocation + "&nl=" + NumberLanes +
